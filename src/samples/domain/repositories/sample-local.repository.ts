@@ -1,18 +1,20 @@
 import { SampleProviderRepository } from "./sample-provider.repository.ts"
-import dataJSON from "../../../../data.json"
 import { SampleEntity } from "../entities/sample.entity.ts"
+import dataJSON from "../../../../data.json"
 
 interface Model extends SampleEntity {}
 
 export class SampleLocalRepository extends SampleProviderRepository<Model> {
   private items: Array<Model> = dataJSON.data
 
-  async create(data: Model): Promise<void> {
+  async create(data: Model): Promise<boolean> {
     this.items.push(data)
+    return true
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: number): Promise<boolean> {
     this.items.filter((item) => item.id !== id)
+    return true
   }
 
   async find(id: number): Promise<Model | null> {
@@ -25,16 +27,18 @@ export class SampleLocalRepository extends SampleProviderRepository<Model> {
     return this.items
   }
 
-  async update(id: number, data: Model): Promise<void | null> {
+  async update(id: number, data: Model): Promise<boolean> {
     const sample: Model | undefined = this.items.find((item) => item.id == id)
-    if (!sample) return null
+    if (!sample) return false
     sample.id = data.id
     sample.name = data.name
+    return true
   }
 
-  async updateField(id: number, key: string, value: any): Promise<void | null> {
+  async updateField(id: number, key: string, value: any): Promise<boolean> {
     const sample: any = this.items.find((item) => item.id == id)
-    if (!sample) return null
+    if (!sample) return false
     sample[key] = value
+    return true
   }
 }

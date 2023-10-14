@@ -8,13 +8,13 @@ export interface ICreateSampleUsecase extends Partial<Model> {}
 export class CreateSampleUsecase {
   constructor(private readonly repository: SampleProviderRepository<Model>) {}
 
-  async execute(input: ICreateSampleUsecase): Promise<void> {
-    const { id, name } = input
+  async execute(data: ICreateSampleUsecase): Promise<boolean> {
+    const { id, name } = data
 
     const sample = new SampleModel()
     sample.id = id
     sample.name = name
 
-    await this.repository.create(sample)
+    return this.repository.create(sample)
   }
 }

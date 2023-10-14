@@ -7,8 +7,9 @@ interface Model extends UserEntity {}
 export class UserLocalRepository extends UserProviderRepository<Model> {
   private items: Array<Model> = dataJSON.data
 
-  async create(data: Model): Promise<void> {
+  async create(data: Model): Promise<boolean> {
     this.items.push(data)
+    return true
   }
 
   login(data: Model): Promise<any> {

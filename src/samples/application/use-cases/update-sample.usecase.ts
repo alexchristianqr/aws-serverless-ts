@@ -7,7 +7,7 @@ export interface IUpdateSampleUsecase extends Partial<Model> {}
 export class UpdateSampleUsecase {
   constructor(private readonly repository: SampleProviderRepository<Model>) {}
 
-  async execute(id: number, data: IUpdateSampleUsecase): Promise<void> {
-    await this.repository.update(id, data)
+  async execute(id: number, data: IUpdateSampleUsecase): Promise<boolean> {
+    return this.repository.update(id, data)
   }
 }
