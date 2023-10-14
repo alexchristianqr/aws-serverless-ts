@@ -1,18 +1,26 @@
 import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy"
 import { ProxyEventMiddleware } from "../../../shared/middlewares/proxy-event.middleware.ts"
-import { Sample } from "../../domain/entities/sample.ts"
-import { SampleService } from "../../domain/services/sample.service.ts"
+import { CreateSampleUsecase, ICreateSampleUsecase } from "../../application/use-cases/create-sample.usecase.ts"
 import { SampleLocalRepository } from "../../domain/repositories/sample-local.repository.ts"
+import { FindSampleUsecase } from "../../application/use-cases/find-sample.usecase.ts"
+import { FindallSampleUsecase } from "../../application/use-cases/findall-sample.usecase.ts"
+import { SampleEntity } from "../../domain/entities/sample.entity.ts"
+import { UpdateSampleUsecase } from "../../application/use-cases/update-sample.usecase.ts"
+import { DeleteSampleUsecase } from "../../application/use-cases/delete-sample.usecase.ts"
+import { UserLocalRepository } from "../../../users/domain/repositories/user-local.repository.ts"
 
-export class SampleController extends ProxyEventMiddleware<Sample> {
-  private service: SampleService
+interface Model extends SampleEntity {}
+
+export class SampleController extends ProxyEventMiddleware<Model> {
+  private repository: SampleLocalRepository = new SampleLocalRepository()
+  private userRepository: UserLocalRepository = new UserLocalRepository()
   private result: any = null
 
   constructor(event: APIGatewayProxyEvent) {
+    super(event)
     console.log("[SampleController.constructor]")
 
-    super(event)
-    this.service = new SampleService(new SampleLocalRepository())
+    console.log(this.userRepository)
   }
 
   async selectResource() {
@@ -31,14 +39,30 @@ export class SampleController extends ProxyEventMiddleware<Sample> {
           return this.create(this.body.payload)
         }
         break
+      case "PUT":
+        if (this.event.resource === "/samples/{id}") {
+          return this.update(this.params.id, this.body.payload)
+        }
+        break
+      case "DELETE":
+        if (this.event.resource === "/samples/{id}") {
+          return this.delete(this.params.id)
+        }
+        break
       default:
-        return this.create(this.body.payload)
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ success: false, message: "Metodo http no soportado" })
+        }
     }
   }
 
-  async create(data: Sample) {
+  async create(data: ICreateSampleUsecase) {
+    console.log("[SampleController.create]", { data })
+
     try {
-      await this.service.create(data)
+      const createSampleUsecase = new CreateSampleUsecase(this.repository)
+      await createSampleUsecase.execute(data)
       return {
         statusCode: 201,
         body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
@@ -52,34 +76,74 @@ export class SampleController extends ProxyEventMiddleware<Sample> {
   }
 
   async delete(id: number) {
-    await this.service.delete(id)
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ result: this.result, event: this.event })
+    console.log("[SampleController.delete]", { id })
+
+    try {
+      const deleteSampleUsecase = new DeleteSampleUsecase(this.repository)
+      this.result = await deleteSampleUsecase.execute(id)
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
+      }
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ success: false, message: error })
+      }
     }
   }
 
   async find(id: number) {
-    this.result = await this.service.find(id)
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ result: this.result, event: this.event })
+    console.log("[SampleController.find]", { id })
+
+    try {
+      const findSampleUsecase = new FindSampleUsecase(this.repository)
+      this.result = await findSampleUsecase.execute(id)
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
+      }
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ success: false, message: error })
+      }
     }
   }
 
   async findAll() {
-    const result = await this.service.findAll()
-    return {
-      statusCode: 201,
-      body: JSON.stringify({ result, event: this.event })
+    console.log("[SampleController.findAll]")
+
+    try {
+      const findallSampleUsecase = new FindallSampleUsecase(this.repository)
+      this.result = await findallSampleUsecase.execute()
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
+      }
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ success: false, message: error })
+      }
     }
   }
 
-  async update(id: number, data: Sample) {
-    await this.service.update(id, data)
-    return {
-      statusCode: 201,
-      body: JSON.stringify({ result: this.result, event: this.event })
+  async update(id: number, data: Model) {
+    console.log("[SampleController.update]", { id, data })
+
+    try {
+      const updateSampleUsecase = new UpdateSampleUsecase(this.repository)
+      await updateSampleUsecase.execute(id, data)
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
+      }
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ success: false, message: error })
+      }
     }
   }
 }

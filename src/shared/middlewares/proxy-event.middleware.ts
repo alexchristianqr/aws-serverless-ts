@@ -16,6 +16,6 @@ export class ProxyEventMiddleware<T> {
     if (body) this.body = JSON.parse(body)
     if (pathParameters) this.params = pathParameters
 
-    console.log({ body: this.body, params: this.params })
+    console.log({ body: this.body, params: this.params, event: this.event })
   }
 }

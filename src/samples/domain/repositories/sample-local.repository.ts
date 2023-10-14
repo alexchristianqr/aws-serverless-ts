@@ -1,11 +1,13 @@
-import { Sample } from "../entities/sample.ts"
-import { SampleGenericProviderRepository } from "./sample-generic-provider.repository.ts"
+import { SampleProviderRepository } from "./sample-provider.repository.ts"
 import dataJSON from "../../../../data.json"
+import { SampleEntity } from "../entities/sample.entity.ts"
 
-export class SampleLocalRepository extends SampleGenericProviderRepository<Sample> {
-  private items: Array<Sample> = dataJSON.data
+interface Model extends SampleEntity {}
 
-  async create(data: Sample): Promise<void> {
+export class SampleLocalRepository extends SampleProviderRepository<Model> {
+  private items: Array<Model> = dataJSON.data
+
+  async create(data: Model): Promise<void> {
     this.items.push(data)
   }
 
@@ -13,20 +15,26 @@ export class SampleLocalRepository extends SampleGenericProviderRepository<Sampl
     this.items.filter((item) => item.id !== id)
   }
 
-  async find(id: number): Promise<Sample | null> {
-    const todo: Sample | undefined = this.items.find((item) => item.id == id)
+  async find(id: number): Promise<Model | null> {
+    const todo: Model | undefined = this.items.find((item) => item.id == id)
     if (!todo) return null
     return todo
   }
 
-  async findAll(): Promise<Array<Sample>> {
+  async findAll(): Promise<Array<Model>> {
     return this.items
   }
 
-  async update(id: number, data: Sample): Promise<void | null> {
-    const todo: Sample | undefined = this.items.find((item) => item.id === id)
-    if (!todo) return null
-    todo.id = data.id
-    todo.name = data.name
+  async update(id: number, data: Model): Promise<void | null> {
+    const sample: Model | undefined = this.items.find((item) => item.id == id)
+    if (!sample) return null
+    sample.id = data.id
+    sample.name = data.name
+  }
+
+  async updateField(id: number, key: string, value: any): Promise<void | null> {
+    const sample: any = this.items.find((item) => item.id == id)
+    if (!sample) return null
+    sample[key] = value
   }
 }
