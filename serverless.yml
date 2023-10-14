@@ -1,0 +1,55 @@
+service: mysls-aws # NOTE: update this with your service name
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: us-east-1
+
+  # Configure the S3 bucket used by Serverless Framework to deploy code packages to Lambda
+  deploymentBucket:
+    name: mystoragebuckets3 #serverless-${self:service}-${sls:stage}
+    blockPublicAccess: true
+    versioning: true
+    serverSideEncryption: AES256
+
+  # IAM permissions
+  iam:
+    role:
+      statements:
+          - Effect: 'Allow'
+            Action:
+              - "lambda:*"
+            Resource: "*"
+
+package:
+  individually: true
+  excludeDevDependencies: true
+  patterns:
+    - "!node_modules/**"
+
+functions:
+  samples:
+    handler: "src/samples/handler.samples"
+    events:
+      - http:
+          path: samples
+          method: get
+      - http:
+          path: samples/{id}
+          method: get
+      - http:
+          path: samples
+          method: post
+      - http:
+          path: samples/{id}
+          method: put
+      - http:
+          path: samples/{id}
+          method: delete
