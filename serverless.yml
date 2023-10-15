@@ -1,5 +1,3 @@
-org: alexchristianqr
-app: aws-template-ts
 service: "aws-template-ts"
 
 plugins:

@@ -32,7 +32,7 @@ serverless offline
 
 serverless deploy list # https://www.serverless.com/framework/docs/providers/aws/cli-reference/deploy-list
 serverless deploy # https://www.serverless.com/framework/docs/providers/aws/cli-reference/deploy
-serverless deploy --stage [production] --region [eu-central-1]
+serverless deploy --stage [dev] --region [eu-central-1]
 serverless deploy --package [/path/to/package/directory]
 serverless deploy function --function [functionName] --stage [dev] --region [us-east-1] # https://www.serverless.com/framework/docs/providers/aws/cli-reference/deploy-function
 
@@ -49,7 +49,8 @@ serverless package --package [/path/to/package/directory]
 serverless package --stage [production] --region [eu-central-1]
 
 serverless login # https://www.serverless.com/framework/docs/providers/aws/cli-reference/login
-
+serverless --org=alexchristianqr
+ 
 serverless metrics --function [functionName] # https://www.serverless.com/framework/docs/providers/aws/cli-reference/metrics
 serverless metrics --startTime [2016-01-01] --endTime [2016-01-02]
 
