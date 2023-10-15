@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy"
-import { ProxyEventMiddleware } from "../../../shared/middlewares/proxy-event.middleware.ts"
+import { ProxyEventMiddleware } from "../../../core/middlewares/proxy-event.middleware.ts"
 import { CreateSampleUsecase, ICreateSampleUsecase } from "../../application/use-cases/create-sample.usecase.ts"
 import { SampleLocalRepository } from "../../domain/repositories/sample-local.repository.ts"
 import { FindSampleUsecase } from "../../application/use-cases/find-sample.usecase.ts"

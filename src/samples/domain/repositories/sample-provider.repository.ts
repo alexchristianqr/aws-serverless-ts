@@ -1,4 +1,4 @@
-import { GenericProviderRepository } from "../../../shared/repositories/generic-provider.repository.ts"
+import { GenericProviderRepository } from "../../../core/repositories/generic-provider.repository.ts"
 
 export abstract class SampleProviderRepository<T> extends GenericProviderRepository<T> {
   abstract find(id: number): Promise<T | null>
