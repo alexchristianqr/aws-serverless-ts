@@ -1,23 +1,21 @@
-service: mysls-aws # NOTE: update this with your service name
+service: "aws-template-ts"
 
 plugins:
   - serverless-esbuild
   - serverless-offline
 
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
   runtime: nodejs14.x
   stage: dev
   region: us-east-1
-
   deploymentBucket:
-    name: mystoragebuckets3 #serverless-${self:service}-${sls:stage}
+    name: "mystoragebuckets3" # serverless-${self:service}-${sls:stage}
     blockPublicAccess: true
     versioning: true
     serverSideEncryption: AES256
-
   iam:
     role:
       statements:
@@ -35,19 +33,20 @@ package:
 functions:
   samples:
     handler: "src/samples/handler.samples"
+    description: "Función lambda para SAMPLE"
     events:
       - http:
-          path: samples
+          path: "samples"
           method: get
       - http:
-          path: samples/{id}
+          path: "samples/{id}"
           method: get
       - http:
-          path: samples
+          path: "samples"
           method: post
       - http:
-          path: samples/{id}
+          path: "samples/{id}"
           method: put
       - http:
-          path: samples/{id}
+          path: "samples/{id}"
           method: delete
