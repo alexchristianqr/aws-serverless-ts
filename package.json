@@ -12,8 +12,9 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "local": "serverless offline",
-    "deploy": "serverless deploy",
+    "sls:local": "serverless offline",
+    "sls:deploy": "serverless deploy --stage dev",
+    "sls:remove": "serverless remove",
     "test": "jest"
   },
   "dependencies": {
