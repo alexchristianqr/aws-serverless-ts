@@ -31,7 +31,7 @@ package:
     - "!node_modules/**"
 
 custom:
-  sampleLambdaFunction: ${file(./src/samples/infrastructure/serverless/function.yml)}
+  sampleLambdaFunction: ${file(src/samples/infrastructure/serverless/function.yml)}
 
 functions:
   samples: ${self:custom.sampleLambdaFunction}
