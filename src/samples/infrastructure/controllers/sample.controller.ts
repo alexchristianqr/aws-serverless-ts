@@ -7,20 +7,20 @@ import { FindallSampleUsecase } from "../../application/use-cases/findall-sample
 import { SampleEntity } from "../../domain/entities/sample.entity.ts"
 import { UpdateSampleUsecase } from "../../application/use-cases/update-sample.usecase.ts"
 import { DeleteSampleUsecase } from "../../application/use-cases/delete-sample.usecase.ts"
-import { UserLocalRepository } from "../../../users/domain/repositories/user-local.repository.ts"
+import { SendResponseService } from "../../../core/responses/send-response.service.ts"
+import { ErrorResponseService } from "../../../core/responses/error-response.service.ts"
+import { HttpStatusCodes } from "../../../core/responses/http-status-code.enum.ts"
 
 interface Model extends SampleEntity {}
 
 export class SampleController extends ProxyEventMiddleware<Model> {
-  private repository: SampleLocalRepository = new SampleLocalRepository()
-  private userRepository: UserLocalRepository = new UserLocalRepository()
-  private result: any = null
+  private readonly repository: SampleLocalRepository = new SampleLocalRepository()
+  private readonly response: any = { send: new SendResponseService(), error: new ErrorResponseService() }
+  private result: any
 
   constructor(event: APIGatewayProxyEvent) {
-    super(event)
     console.log("[SampleController.constructor]")
-
-    console.log(this.userRepository)
+    super(event)
   }
 
   async selectResource() {
@@ -52,7 +52,7 @@ export class SampleController extends ProxyEventMiddleware<Model> {
       default:
         return {
           statusCode: 500,
-          body: JSON.stringify({ success: false, message: "Metodo http no soportado" })
+          body: JSON.stringify({ success: false, message: "Recurso no encontrado" })
         }
     }
   }
@@ -63,15 +63,9 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     try {
       const createSampleUsecase = new CreateSampleUsecase(this.repository)
       await createSampleUsecase.execute(data)
-      return {
-        statusCode: 201,
-        body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
-      }
+      return this.response.send.apiResponse({ message: "Sample created", statusCode: HttpStatusCodes.CREATED })
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ success: false, message: error })
-      }
+      return this.response.error.apiResponse({ error: error })
     }
   }
 
@@ -81,15 +75,9 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     try {
       const deleteSampleUsecase = new DeleteSampleUsecase(this.repository)
       this.result = await deleteSampleUsecase.execute(id)
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
-      }
+      return this.response.send.apiResponse({ message: "Delete sample", result: this.result })
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ success: false, message: error })
-      }
+      return this.response.error.apiResponse({ error: error })
     }
   }
 
@@ -99,15 +87,9 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     try {
       const findSampleUsecase = new FindSampleUsecase(this.repository)
       this.result = await findSampleUsecase.execute(id)
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
-      }
+      return this.response.send.apiResponse({ message: "Single sample", result: this.result })
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ success: false, message: error })
-      }
+      return this.response.error.apiResponse({ error: error })
     }
   }
 
@@ -117,15 +99,9 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     try {
       const findallSampleUsecase = new FindallSampleUsecase(this.repository)
       this.result = await findallSampleUsecase.execute()
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
-      }
+      return this.response.send.apiResponse({ message: "All samples", result: this.result })
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ success: false, message: error })
-      }
+      return this.response.error.apiResponse({ error: error })
     }
   }
 
@@ -135,15 +111,9 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     try {
       const updateSampleUsecase = new UpdateSampleUsecase(this.repository)
       await updateSampleUsecase.execute(id, data)
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ success: true, result: this.result, event: this.event.requestContext })
-      }
+      return this.response.send.apiResponse({ message: "Update sample", result: this.result })
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ success: false, message: error })
-      }
+      return this.response.error.apiResponse({ error: error })
     }
   }
 }
