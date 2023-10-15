@@ -8,7 +8,7 @@ Plantilla AWS serverless con arquitectura hexagonal. (Typescript + Nodejs)
 # Desplegar app en local
 npm run local
  
-# Desplegar app en dashboard serverless
+# Desplegar app en AWS
 npm run deploy 
 ```
 
@@ -19,8 +19,8 @@ npm run deploy
 https://app.serverless.com/alexchristianqr/apps
 
 serverless offline # Desplegar app en local
-serverless deploy # Desplegar app en dashboard serverless
-serverless remove # Remover app en dashboard serverless
+serverless deploy # Desplegar app en AWS
+serverless remove # Remover app
 ```
 
 ## Docs
