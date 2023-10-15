@@ -1,0 +1,19 @@
+name: "sample-lambdafunction"
+handler: "src/samples/handler.samples"
+description: "Función lambda para SAMPLE"
+events:
+  - http:
+      path: "samples"
+      method: get
+  - http:
+      path: "samples/{id}"
+      method: get
+  - http:
+      path: "samples"
+      method: post
+  - http:
+      path: "samples/{id}"
+      method: put
+  - http:
+      path: "samples/{id}"
+      method: delete
