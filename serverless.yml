@@ -21,10 +21,10 @@ provider:
   iam:
     role:
       statements:
-          - Effect: 'Allow'
-            Action:
-              - "lambda:*"
-            Resource: "*"
+        - Effect: 'Allow'
+          Action:
+            - "lambda:*"
+          Resource: "*"
 
 package:
   individually: true
