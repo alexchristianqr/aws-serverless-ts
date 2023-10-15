@@ -4,9 +4,12 @@ Plantilla AWS serverless con arquitectura hexagonal. (Typescript + Nodejs)
 
 ## Usage npm
 
-```bash
-npm run local # Desplegar app en local
-npm run deploy # Desplegar app en dashboard serverless
+```shell
+# Desplegar app en local
+npm run local
+ 
+# Desplegar app en dashboard serverless
+npm run deploy 
 ```
 
 ## Usage serverless
