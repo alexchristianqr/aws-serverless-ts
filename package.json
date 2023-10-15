@@ -1,13 +1,20 @@
 {
   "name": "aws-serverless-ts",
+  "description": "",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "commonjs",
+  "author": {
+    "name": "Alex Christian",
+    "email": "alexchristianqr@gmail.com"
+  },
+  "repository": {
+    "url": "Payload"
+  },
   "scripts": {
     "local": "serverless offline",
     "deploy": "serverless deploy",
-    "test": "jest",
-    "coverage": "nyc --reporter lcov npm run test"
+    "test": "jest"
   },
   "dependencies": {
     "serverless": "^3.35.2"

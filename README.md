@@ -1,3 +1,8 @@
+# AWS serverless TS
+Plantilla AWS serverless con arquitectura hexagonal + TS + Nodejs
+
+## Usage
 ```bash
-serverless invoke locale -f hello
+npm run local
+npm run deploy
 ```
