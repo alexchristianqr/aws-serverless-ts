@@ -1,6 +1,6 @@
 # AWS Serverless TS
 
-Plantilla AWS serverless con arquitectura hexagonal + JS + Nodejs
+Plantilla AWS serverless con arquitectura hexagonal. (Typescript + Nodejs)
 
 ## Usage npm
 
