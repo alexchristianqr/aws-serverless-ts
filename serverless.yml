@@ -1,3 +1,5 @@
+org: alexchristianqr
+app: aws-template-ts
 service: "aws-template-ts"
 
 plugins:
@@ -30,9 +32,6 @@ package:
   patterns:
     - "!node_modules/**"
 
-custom:
-  sampleLambdaFunction: ${file(src/samples/infrastructure/serverless/function.yml)}
-
 functions:
-  samples: ${self:custom.sampleLambdaFunction}
+  samples: ${file(src/samples/infrastructure/serverless/function.yml)}
 
