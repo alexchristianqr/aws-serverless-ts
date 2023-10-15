@@ -8,7 +8,6 @@ describe("Sample use case", () => {
   let result = null
 
   beforeEach(() => {
-    // you can mock entire instance instead an adapter
     repository = new SampleLocalRepository()
     usecase = new CreateSampleUsecase(repository)
   })

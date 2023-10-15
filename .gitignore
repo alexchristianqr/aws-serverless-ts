@@ -23,5 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
+# My files ignored
 .esbuild
 .serverless
+package-lock.json

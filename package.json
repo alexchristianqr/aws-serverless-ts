@@ -1,6 +1,6 @@
 {
   "name": "aws-serverless-ts",
-  "description": "Plantilla AWS serverless con arquitectura hexagonal + TS + Nodejs",
+  "description": "Plantilla AWS serverless con arquitectura hexagonal. (Typescript + Nodejs)",
   "author": {
     "name": "Alex Christian",
     "email": "alexchristianqr@gmail.com"
