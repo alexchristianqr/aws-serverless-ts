@@ -12,14 +12,12 @@ provider:
   stage: dev
   region: us-east-1
 
-  # Configure the S3 bucket used by Serverless Framework to deploy code packages to Lambda
   deploymentBucket:
     name: mystoragebuckets3 #serverless-${self:service}-${sls:stage}
     blockPublicAccess: true
     versioning: true
     serverSideEncryption: AES256
 
-  # IAM permissions
   iam:
     role:
       statements:
