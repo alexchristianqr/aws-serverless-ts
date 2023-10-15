@@ -1,9 +1,6 @@
 {
   "name": "aws-serverless-ts",
   "description": "Plantilla AWS serverless con arquitectura hexagonal + TS + Nodejs",
-  "private": true,
-  "version": "1.0.0",
-  "type": "commonjs",
   "author": {
     "name": "Alex Christian",
     "email": "alexchristianqr@gmail.com"
@@ -11,6 +8,9 @@
   "repository": {
     "url": "https://github.com/alexchristianqr/aws-serverless-ts"
   },
+  "type": "commonjs",
+  "private": true,
+  "version": "1.0.0",
   "scripts": {
     "local": "serverless offline",
     "deploy": "serverless deploy",
