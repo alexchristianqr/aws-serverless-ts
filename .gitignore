@@ -27,3 +27,5 @@ dist-ssr
 .esbuild
 .serverless
 package-lock.json
+.env.dev
+.env.prod

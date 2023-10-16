@@ -21,9 +21,9 @@ npm run sls:remove
 # Dashboard serverless
 https://app.serverless.com/alexchristianqr/apps
 
-serverless offline # Desplegar app en local
+serverless offline --stage dev # Desplegar app en local
 serverless deploy --stage dev # Desplegar app en AWS
-serverless remove # Eliminar app
+serverless remove --stage dev # Eliminar app
 ```
 
 ## Docs

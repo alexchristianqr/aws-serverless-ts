@@ -6,13 +6,15 @@ plugins:
 
 frameworkVersion: "3"
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs14.x
-  stage: dev
+  stage: ${sls:stage}
   region: us-east-1
   deploymentBucket:
-    name: "mystoragebuckets3" # serverless-${self:service}-${sls:stage}
+    name: ${env:BUCKET_S3_NAME} # serverless-${self:service}-${sls:stage}
     blockPublicAccess: true
     versioning: true
     serverSideEncryption: AES256
@@ -32,4 +34,3 @@ package:
 
 functions:
   samples: ${file(src/samples/infrastructure/serverless/function.yml)}
-
