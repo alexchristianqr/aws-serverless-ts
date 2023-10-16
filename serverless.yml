@@ -32,5 +32,10 @@ package:
   patterns:
     - "!node_modules/**"
 
+custom:
+  esbuild:
+    bundle: true
+    minify: true
+
 functions:
   samples: ${file(src/samples/infrastructure/serverless/function.yml)}
