@@ -10,6 +10,8 @@ export class ProxyEventMiddleware<T> {
   protected event: APIGatewayProxyEvent
 
   constructor(event: APIGatewayProxyEvent) {
+    console.log("[ProxyEventMiddleware.constructor]")
+
     this.event = event
     const { body, pathParameters } = event
 

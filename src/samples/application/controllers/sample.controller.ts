@@ -1,20 +1,17 @@
 import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy"
-import { ProxyEventMiddleware } from "../../../core/middlewares/proxy-event.middleware.ts"
 import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts"
 import { SampleEntity } from "../../domain/entities/sample.entity.ts"
-import { SendResponseService } from "../../../core/responses/send-response.service.ts"
-import { ErrorResponseService } from "../../../core/responses/error-response.service.ts"
 import { HttpStatusCodes } from "../../../core/responses/http-status-code.enum.ts"
 import { SampleUsecase } from "../use-cases/sample.usecase.ts"
 import { CreateSampleDto } from "../dtos/create-sample.dto.ts"
 import { UpdateSampleDto } from "../dtos/update-sample.dto.ts"
+import { CoreService } from "../../../core/services/core.service.ts"
 
 interface Model extends SampleEntity {}
 
-export class SampleController extends ProxyEventMiddleware<Model> {
+export class SampleController extends CoreService<Model> {
   private readonly repository: SampleLocalRepository = new SampleLocalRepository()
   private readonly sampleUsecase: SampleUsecase = new SampleUsecase(this.repository)
-  private readonly response: any = { send: new SendResponseService(), error: new ErrorResponseService() }
   private result: any
 
   constructor(event: APIGatewayProxyEvent) {
