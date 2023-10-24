@@ -1,10 +1,10 @@
-import { SampleProviderRepository } from "./sample-provider.repository.ts"
-import { SampleEntity } from "../entities/sample.entity.ts"
-import dataJSON from "../../../../data.json"
+import { SampleOutputRepository } from "../../../domain/ports/output/sample-output.repository.ts"
+import { SampleEntity } from "../../../domain/entities/sample.entity.ts"
+import dataJSON from "../../../../../data.json"
 
 interface Model extends SampleEntity {}
 
-export class SampleLocalRepository extends SampleProviderRepository<Model> {
+export class SampleLocalRepository extends SampleOutputRepository<Model> {
   private items: Array<Model> = dataJSON.data
 
   async create(data: Model): Promise<boolean> {

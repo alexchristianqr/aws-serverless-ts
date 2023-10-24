@@ -36,6 +36,7 @@ custom:
   esbuild:
     bundle: true
     minify: true
+    sourcemap: true
 
 functions:
-  samples: ${file(src/samples/infrastructure/serverless/function.yml)}
+  samples: ${file(src/samples/application/serverless/function.yml)}

@@ -1,20 +1,19 @@
 import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy"
 import { ProxyEventMiddleware } from "../../../core/middlewares/proxy-event.middleware.ts"
-import { CreateSampleUsecase, ICreateSampleUsecase } from "../../application/use-cases/create-sample.usecase.ts"
-import { SampleLocalRepository } from "../../domain/repositories/sample-local.repository.ts"
-import { FindSampleUsecase } from "../../application/use-cases/find-sample.usecase.ts"
-import { FindallSampleUsecase } from "../../application/use-cases/findall-sample.usecase.ts"
+import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts"
 import { SampleEntity } from "../../domain/entities/sample.entity.ts"
-import { UpdateSampleUsecase } from "../../application/use-cases/update-sample.usecase.ts"
-import { DeleteSampleUsecase } from "../../application/use-cases/delete-sample.usecase.ts"
 import { SendResponseService } from "../../../core/responses/send-response.service.ts"
 import { ErrorResponseService } from "../../../core/responses/error-response.service.ts"
 import { HttpStatusCodes } from "../../../core/responses/http-status-code.enum.ts"
+import { SampleUsecase } from "../use-cases/sample.usecase.ts"
+import { CreateSampleDto } from "../dtos/create-sample.dto.ts"
+import { UpdateSampleDto } from "../dtos/update-sample.dto.ts"
 
 interface Model extends SampleEntity {}
 
 export class SampleController extends ProxyEventMiddleware<Model> {
   private readonly repository: SampleLocalRepository = new SampleLocalRepository()
+  private readonly sampleUsecase: SampleUsecase = new SampleUsecase(this.repository)
   private readonly response: any = { send: new SendResponseService(), error: new ErrorResponseService() }
   private result: any
 
@@ -57,12 +56,11 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     }
   }
 
-  async create(data: ICreateSampleUsecase) {
+  async create(data: CreateSampleDto) {
     console.log("[SampleController.create]", { data })
 
     try {
-      const createSampleUsecase = new CreateSampleUsecase(this.repository)
-      await createSampleUsecase.execute(data)
+      await this.sampleUsecase.create(data)
       return this.response.send.apiResponse({ message: "Sample created", statusCode: HttpStatusCodes.CREATED })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
@@ -73,8 +71,7 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     console.log("[SampleController.delete]", { id })
 
     try {
-      const deleteSampleUsecase = new DeleteSampleUsecase(this.repository)
-      this.result = await deleteSampleUsecase.execute(id)
+      this.result = await this.sampleUsecase.delete(id)
       return this.response.send.apiResponse({ message: "Delete sample", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
@@ -85,8 +82,7 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     console.log("[SampleController.find]", { id })
 
     try {
-      const findSampleUsecase = new FindSampleUsecase(this.repository)
-      this.result = await findSampleUsecase.execute(id)
+      this.result = await this.sampleUsecase.find(id)
       return this.response.send.apiResponse({ message: "Single sample", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
@@ -97,20 +93,18 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     console.log("[SampleController.findAll]")
 
     try {
-      const findallSampleUsecase = new FindallSampleUsecase(this.repository)
-      this.result = await findallSampleUsecase.execute()
+      this.result = await this.sampleUsecase.findAll()
       return this.response.send.apiResponse({ message: "All samples", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }
   }
 
-  async update(id: number, data: Model) {
+  async update(id: number, data: UpdateSampleDto) {
     console.log("[SampleController.update]", { id, data })
 
     try {
-      const updateSampleUsecase = new UpdateSampleUsecase(this.repository)
-      await updateSampleUsecase.execute(id, data)
+      await this.sampleUsecase.update(id, data)
       return this.response.send.apiResponse({ message: "Update sample", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
