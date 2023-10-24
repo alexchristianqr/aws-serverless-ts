@@ -60,8 +60,8 @@ export class SampleController extends ProxyEventMiddleware<Model> {
     console.log("[SampleController.create]", { data })
 
     try {
-      await this.sampleUsecase.create(data)
-      return this.response.send.apiResponse({ message: "Sample created", statusCode: HttpStatusCodes.CREATED })
+      this.result = await this.sampleUsecase.create(data)
+      return this.response.send.apiResponse({ message: "Sample created", result: this.result, statusCode: HttpStatusCodes.CREATED })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }

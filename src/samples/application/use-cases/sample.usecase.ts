@@ -1,16 +1,17 @@
 import { SampleInputService } from "../../domain/ports/input/sample-input.service.ts"
 import { SampleOutputRepository } from "../../domain/ports/output/sample-output.repository.ts"
 import { SampleEntity } from "../../domain/entities/sample.entity.ts"
-import { CreateSampleDto } from "../dtos/create-sample.dto.ts"
-import { UpdateSampleDto } from "../dtos/update-sample.dto.ts"
+import { CreateSampleDto, ICreateSampleDto } from "../dtos/create-sample.dto.ts"
+import { IUpdateSampleDto, UpdateSampleDto } from "../dtos/update-sample.dto.ts"
+import { GetSampleBasicDto, IGetSampleBasicDto } from "../dtos/get-sample-basic.dto.ts"
 
 interface Model extends SampleEntity {}
 
 export class SampleUsecase implements SampleInputService {
   constructor(private readonly repository: SampleOutputRepository<Model>) {}
 
-  create(data: CreateSampleDto): Promise<boolean> {
-    const sample: CreateSampleDto = new CreateSampleDto(data)
+  create(data: ICreateSampleDto): Promise<ICreateSampleDto> {
+    const sample: ICreateSampleDto = new CreateSampleDto(data)
     return this.repository.create(sample)
   }
 
@@ -18,16 +19,17 @@ export class SampleUsecase implements SampleInputService {
     return this.repository.delete(id)
   }
 
-  find(id: number): Promise<SampleEntity | null> {
+  find(id: number): Promise<Model | null> {
     return this.repository.find(id)
   }
 
-  findAll(): Promise<Array<SampleEntity>> {
-    return this.repository.findAll()
+  async findAll(): Promise<Array<IGetSampleBasicDto>> {
+    const samples: Array<Model> = await this.repository.findAll()
+    return samples.map((item: Model) => new GetSampleBasicDto(item))
   }
 
-  update(id: number, data: UpdateSampleDto): Promise<boolean> {
-    const sample: UpdateSampleDto = new UpdateSampleDto(data)
+  update(id: number, data: IUpdateSampleDto): Promise<boolean> {
+    const sample: IUpdateSampleDto = new UpdateSampleDto(data)
     return this.repository.update(id, sample)
   }
 

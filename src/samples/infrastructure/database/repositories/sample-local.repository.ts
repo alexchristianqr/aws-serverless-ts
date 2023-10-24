@@ -4,12 +4,12 @@ import dataJSON from "../../../../../data.json"
 
 interface Model extends SampleEntity {}
 
-export class SampleLocalRepository extends SampleOutputRepository<Model> {
+export class SampleLocalRepository implements SampleOutputRepository<Model> {
   private items: Array<Model> = dataJSON.data
 
-  async create(data: Model): Promise<boolean> {
+  async create(data: Model): Promise<Model> {
     this.items.push(data)
-    return true
+    return data
   }
 
   async delete(id: number): Promise<boolean> {
@@ -17,10 +17,10 @@ export class SampleLocalRepository extends SampleOutputRepository<Model> {
     return true
   }
 
-  async find(id: number): Promise<Model | null> {
-    const todo: Model | undefined = this.items.find((item) => item.id == id)
-    if (!todo) return null
-    return todo
+  async find(id?: number): Promise<Model | null> {
+    const sample: Model | undefined = this.items.find((item) => item.id == id)
+    if (!sample) return null
+    return sample
   }
 
   async findAll(): Promise<Array<Model>> {

@@ -1,28 +1,31 @@
-import { CreateSampleUsecase } from "../../../src/samples/application/use-cases/create-sample.usecase"
-import { SampleLocalRepository } from "../../../src/samples/domain/repositories/sample-local.repository"
-import { SampleModel } from "../../../src/samples/domain/entities/sample.model"
+import { SampleUsecase } from "../../../src/samples/application/use-cases/sample.usecase"
+import { SampleLocalRepository } from "../../../src/samples/infrastructure/database/repositories/sample-local.repository"
+import { CreateSampleDto, ICreateSampleDto } from "../../../src/samples/application/dtos/create-sample.dto"
 
 describe("Sample use case", () => {
   let repository: SampleLocalRepository
-  let usecase: CreateSampleUsecase
+  let usecase: SampleUsecase
   let result = null
 
   beforeEach(() => {
     repository = new SampleLocalRepository()
-    usecase = new CreateSampleUsecase(repository)
+    usecase = new SampleUsecase(repository)
   })
 
   it("Create sample test", async () => {
-    const sample = new SampleModel()
-    sample.id = 1
-    sample.name = "Alex"
+    const sample: ICreateSampleDto = new CreateSampleDto({
+      id: 1,
+      name: "Alex",
+      lastname: "Quispe",
+      age: "28"
+    })
 
-    result = await usecase.execute(sample)
-    console.log({ result })
-    expect(result).toEqual(true)
+    result = await usecase.create(sample)
+    expect(result).toEqual(sample)
 
-    result = await repository.find(sample.id)
-    console.log({ result })
-    expect(result).toEqual({ id: 1, name: "Alex" })
+    const id = result?.id
+
+    result = await repository.find(id)
+    expect(result).toEqual(sample)
   })
 })

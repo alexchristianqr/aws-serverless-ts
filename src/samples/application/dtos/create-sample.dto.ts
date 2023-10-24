@@ -1,23 +1,23 @@
 import { SampleEntity } from "../../domain/entities/sample.entity.ts"
 
-abstract class ICreateSampleDto extends SampleEntity {}
+export abstract class ICreateSampleDto extends SampleEntity {}
 
 export class CreateSampleDto extends ICreateSampleDto {
-  constructor(data: CreateSampleDto) {
+  constructor(data?: ICreateSampleDto) {
     super()
+    this.validate(data)
 
-    this.id = data.id
-    this.name = data.name
-    this.lastname = data.lastname
-    this.age = data.age
-
-    this.validate()
+    this.id = data?.id
+    this.name = data?.name
+    this.lastname = data?.lastname
+    this.age = data?.age
   }
 
-  validate() {
-    if (!this.id) throw new Error("El id es necesario")
-    if (!this.name) throw new Error("El nombre es necesario")
-    if (!this.lastname) throw new Error("El apellido es necesario")
-    return this
+  validate(data?: ICreateSampleDto) {
+    if (!data) throw new Error("[data] no existe")
+    if (!data?.id) throw new Error("[id] es necesario")
+    if (!data?.name) throw new Error("[nombre] es necesario")
+    if (!data?.lastname) throw new Error("[apellido] es necesario")
+    if (!data?.age) throw new Error("[edad] es necesario")
   }
 }
