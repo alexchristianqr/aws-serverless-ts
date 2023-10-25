@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy"
 import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts"
 import { SampleEntity } from "../../domain/entities/sample.entity.ts"
-import { HttpStatusCodes } from "../../../core/responses/http-status-code.enum.ts"
+import { HttpStatusCodes } from "../../../core/enums/http-status-code.enum.ts"
 import { SampleUsecase } from "../use-cases/sample.usecase.ts"
 import { CreateSampleDto } from "../dtos/create-sample.dto.ts"
 import { UpdateSampleDto } from "../dtos/update-sample.dto.ts"

@@ -1,4 +1,4 @@
-import { HttpStatusCodes } from "./http-status-code.enum.ts"
+import { HttpStatusCodes } from "../../enums/http-status-code.enum.ts"
 
 interface Body {
   statusCode?: HttpStatusCodes
