@@ -1,54 +1,60 @@
-import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy"
 import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts"
 import { SampleEntity } from "../../domain/entities/sample.entity.ts"
 import { SampleUsecase } from "../use-cases/sample.usecase.ts"
 import { CreateSampleDto } from "../dtos/create-sample.dto.ts"
 import { UpdateSampleDto } from "../dtos/update-sample.dto.ts"
-import { CoreService, HttpStatusCodes } from "../../../core"
+import { CoreService, GlobalAwsInterface, HttpStatusCodes } from "../../../core"
 
 interface Model extends SampleEntity {}
+
+// type ActionEnums = "GET" | "POST" | "PUT" | "DELETE"
+// type IAction = {
+//   // [Key in ActionEnums]: Array<{ path: string; callback: Function }>
+//   path: string
+//   callback: Function
+// }
+//
+// interface IMyAction {
+//   (Record<this,string>)
+// }
 
 export class SampleController extends CoreService<Model> {
   private readonly repository: SampleLocalRepository = new SampleLocalRepository()
   private readonly sampleUsecase: SampleUsecase = new SampleUsecase(this.repository)
   private result: any
 
-  constructor(event: APIGatewayProxyEvent) {
+  constructor(event: GlobalAwsInterface) {
     console.log("[SampleController.constructor]")
     super(event)
+  }
+
+  resourceIsValid(path: string) {
+    return this.event.resource === path
   }
 
   async selectResource() {
     console.log("[SampleController.selectResource]")
 
-    switch (this.event.httpMethod) {
-      case "GET":
-        if (this.event.resource === "/samples") {
-          return this.findAll()
-        } else if (this.event.resource === "/samples/{id}") {
-          return this.find(this.params.id)
-        }
-        break
-      case "POST":
-        if (this.event.resource === "/samples") {
-          return this.create(this.body.payload)
-        }
-        break
-      case "PUT":
-        if (this.event.resource === "/samples/{id}") {
-          return this.update(this.params.id, this.body.payload)
-        }
-        break
-      case "DELETE":
-        if (this.event.resource === "/samples/{id}") {
-          return this.delete(this.params.id)
-        }
-        break
-      default:
-        return {
-          statusCode: 500,
-          body: JSON.stringify({ success: false, message: "Recurso no encontrado" })
-        }
+    const actions: any = {
+      GET: [
+        { path: "/samples", callback: () => this.findAll() },
+        { path: "/samples/{id}", callback: () => this.find(this.params.id) }
+      ],
+      POST: [{ path: "/samples", callback: () => this.create(this.body.payload) }],
+      PUT: [{ path: "/samples/{id}", callback: () => this.update(this.params.id, this.body.payload) }],
+      DELETE: [{ path: "/samples/{id}", callback: () => this.delete(this.params.id) }]
+    }
+
+    const actionArray = actions[this.event.httpMethod.toUpperCase()] || []
+
+    for (const action of actionArray) {
+      if (!this.resourceIsValid(action.path)) continue
+      return action.callback()
+    }
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ success: false, message: "Recurso no encontrado" })
     }
   }
 
@@ -57,7 +63,11 @@ export class SampleController extends CoreService<Model> {
 
     try {
       this.result = await this.sampleUsecase.create(data)
-      return this.response.send.apiResponse({ message: "Sample created", result: this.result, statusCode: HttpStatusCodes.CREATED })
+      return this.response.send.apiResponse({
+        message: "Sample created",
+        result: this.result,
+        statusCode: HttpStatusCodes.CREATED
+      })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }
