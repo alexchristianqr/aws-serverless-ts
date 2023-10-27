@@ -1,11 +1,13 @@
-import { HttpStatusCodes } from "../../enums/http-status-code.enum.ts"
+// import { HttpStatusCodes } from "../../enums"
+
+import { HttpStatusCodes } from "../../enums"
 
 interface Body {
   statusCode?: HttpStatusCodes
   success?: boolean
   message?: string
   detail?: any
-  error: Error
+  error?: Error
 }
 
 interface Payload {
@@ -27,7 +29,7 @@ export class ErrorResponseService {
     this.payload.body.statusCode = payload?.statusCode || HttpStatusCodes.INTERNAL_SERVER
     this.payload.body.success = payload?.success || false
     this.payload.body.message = payload?.error?.message || payload?.message
-    this.payload.body.detail = payload?.error.stack
+    this.payload.body.detail = payload?.error?.stack
 
     this.response.statusCode = this.payload.body.statusCode
     this.response.body = JSON.stringify(this.payload.body)

@@ -5,18 +5,14 @@ import { CreateSampleDto } from "../dtos/create-sample.dto.ts"
 import { UpdateSampleDto } from "../dtos/update-sample.dto.ts"
 import { CoreService, GlobalAwsInterface, HttpStatusCodes } from "../../../core"
 
+interface Route {
+  path: string
+  callback: Function
+}
+interface IRoutes {
+  [key: string]: Route[]
+}
 interface Model extends SampleEntity {}
-
-// type ActionEnums = "GET" | "POST" | "PUT" | "DELETE"
-// type IAction = {
-//   // [Key in ActionEnums]: Array<{ path: string; callback: Function }>
-//   path: string
-//   callback: Function
-// }
-//
-// interface IMyAction {
-//   (Record<this,string>)
-// }
 
 export class SampleController extends CoreService<Model> {
   private readonly repository: SampleLocalRepository = new SampleLocalRepository()
@@ -35,7 +31,7 @@ export class SampleController extends CoreService<Model> {
   async selectResource() {
     console.log("[SampleController.selectResource]")
 
-    const actions: any = {
+    const routes: IRoutes = {
       GET: [
         { path: "/samples", callback: () => this.findAll() },
         { path: "/samples/{id}", callback: () => this.find(this.params.id) }
@@ -45,17 +41,18 @@ export class SampleController extends CoreService<Model> {
       DELETE: [{ path: "/samples/{id}", callback: () => this.delete(this.params.id) }]
     }
 
-    const actionArray = actions[this.event.httpMethod.toUpperCase()] || []
+    const method: string | undefined | null = this.event?.httpMethod?.toUpperCase()
+    if (!method) {
+      throw new Error(`Método no válido: ${method}`)
+    }
+    const routesArray = routes[method] || []
 
-    for (const action of actionArray) {
-      if (!this.resourceIsValid(action.path)) continue
-      return action.callback()
+    for (const route of routesArray) {
+      if (!this.resourceIsValid(route.path)) continue
+      return route.callback()
     }
 
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ success: false, message: "Recurso no encontrado" })
-    }
+    return this.response.error.apiResponse({ message: "Recurso no encontrado" })
   }
 
   async create(data: CreateSampleDto) {
