@@ -1,5 +1,3 @@
-// import { HttpStatusCodes } from "../../enums"
-
 import { HttpStatusCodes } from "../../enums"
 
 interface Body {
