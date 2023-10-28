@@ -20,7 +20,7 @@ export class UserController extends CoreService<Model> {
   private result: any
 
   constructor(event: CI_APIGatewayProxyEvent, context: CI_Context) {
-    console.log("[SampleController.constructor]")
+    console.log("[UserController.constructor]")
     super(event, context)
   }
 
@@ -29,7 +29,7 @@ export class UserController extends CoreService<Model> {
   }
 
   async selectResource() {
-    console.log("[SampleController.selectResource]")
+    console.log("[UserController.selectResource]")
 
     const routes: IRoutes = {
       GET: [
@@ -56,7 +56,7 @@ export class UserController extends CoreService<Model> {
   }
 
   async create(data: CreateSampleDto) {
-    console.log("[SampleController.create]", { data })
+    console.log("[UserController.create]", { data })
 
     try {
       this.result = await this.sampleUsecase.create(data)
@@ -71,45 +71,45 @@ export class UserController extends CoreService<Model> {
   }
 
   async delete(id: number) {
-    console.log("[SampleController.delete]", { id })
+    console.log("[UserController.delete]", { id })
 
     try {
       this.result = await this.sampleUsecase.delete(id)
-      return this.response.send.apiResponse({ message: "Delete sample", result: this.result })
+      return this.response.send.apiResponse({ message: "Delete user", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }
   }
 
   async find(id: number) {
-    console.log("[SampleController.find]", { id })
+    console.log("[UserController.find]", { id })
 
     try {
       this.result = await this.sampleUsecase.find(id)
-      return this.response.send.apiResponse({ message: "Single sample", result: this.result })
+      return this.response.send.apiResponse({ message: "Single user", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }
   }
 
   async findAll() {
-    console.log("[SampleController.findAll]")
+    console.log("[UserController.findAll]")
 
     try {
       this.result = await this.sampleUsecase.findAll()
       //
-      return this.response.send.apiResponse({ message: "All samples", result: this.result })
+      return this.response.send.apiResponse({ message: "All users", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }
   }
 
   async update(id: number, data: UpdateSampleDto) {
-    console.log("[SampleController.update]", { id, data })
+    console.log("[UserController.update]", { id, data })
 
     try {
       await this.sampleUsecase.update(id, data)
-      return this.response.send.apiResponse({ message: "Update sample", result: this.result })
+      return this.response.send.apiResponse({ message: "Update user", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }
