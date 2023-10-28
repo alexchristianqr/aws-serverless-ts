@@ -40,3 +40,4 @@ custom:
 
 functions:
   samples: ${file(src/samples/application/serverless/function.yml)}
+  users: ${file(src/users/application/serverless/function.yml)}

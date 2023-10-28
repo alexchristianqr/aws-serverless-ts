@@ -14,7 +14,7 @@ interface IRoutes {
 }
 interface Model extends SampleEntity {}
 
-export class SampleController extends CoreService<Model> {
+export class UserController extends CoreService<Model> {
   private readonly repository: SampleLocalRepository = new SampleLocalRepository()
   private readonly sampleUsecase: SampleUsecase = new SampleUsecase(this.repository)
   private result: any
@@ -33,12 +33,12 @@ export class SampleController extends CoreService<Model> {
 
     const routes: IRoutes = {
       GET: [
-        { path: "/samples", callback: () => this.findAll() },
-        { path: "/samples/{id}", callback: () => this.find(this.params.id) }
+        { path: "/users", callback: () => this.findAll() },
+        { path: "/users/{id}", callback: () => this.find(this.params.id) }
       ],
-      POST: [{ path: "/samples", callback: () => this.create(this.body.payload) }],
-      PUT: [{ path: "/samples/{id}", callback: () => this.update(this.params.id, this.body.payload) }],
-      DELETE: [{ path: "/samples/{id}", callback: () => this.delete(this.params.id) }]
+      POST: [{ path: "/users", callback: () => this.create(this.body.payload) }],
+      PUT: [{ path: "/users/{id}", callback: () => this.update(this.params.id, this.body.payload) }],
+      DELETE: [{ path: "/users/{id}", callback: () => this.delete(this.params.id) }]
     }
 
     const method: string | undefined | null = this.event?.httpMethod?.toUpperCase()

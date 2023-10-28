@@ -1,6 +1,8 @@
 import { SampleUsecase } from "../../../src/samples/application/use-cases/sample.usecase"
 import { SampleLocalRepository } from "../../../src/samples/infrastructure/database/repositories/sample-local.repository"
 import { CreateSampleDto, ICreateSampleDto } from "../../../src/samples/application/dtos/create-sample.dto"
+import { LambdafunctionAdapterService } from "../../../src/core/services/adapters/lambdafunction-adapter.service"
+import { CI_InvokeCommandInput, CV_LogType } from "../../../src/core"
 
 describe("Sample use case", () => {
   let repository: SampleLocalRepository
@@ -22,6 +24,18 @@ describe("Sample use case", () => {
 
     result = await usecase.create(sample)
     expect(result).toEqual(sample)
+
+    const input: CI_InvokeCommandInput = {
+      FunctionName: "user-lambdafunction", //arn:aws:lambda:us-east-1:744984787614:function:user-lambdafunctiontr
+      InvocationType: "Event", // RequestResponse, Event
+      Payload: JSON.stringify({
+        httpMethod: "GET",
+        resource: "/users/{id}"
+      }),
+      LogType: CV_LogType.Tail
+    }
+    const respuestaInvocada: any = await LambdafunctionAdapterService.invokeFunction(input)
+    console.log(JSON.stringify(respuestaInvocada))
 
     const id = result?.id
 
