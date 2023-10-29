@@ -1,0 +1,40 @@
+getUsers:
+  handler: "src/users/handler.users"
+  description: "Función lambda para USER"
+  events:
+    - http:
+        path: "users"
+        method: get
+        cors: true
+getUserById:
+  handler: "src/users/handler.users"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "users/{id}"
+        method: get
+        cors: true
+createUser:
+  handler: "src/users/handler.users"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "users"
+        method: post
+        cors: true
+updateUserById:
+  handler: "src/users/handler.users"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "users/{id}"
+        method: put
+        cors: true
+removeUserById:
+  handler: "src/users/handler.users"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "users/{id}"
+        method: delete
+        cors: true

@@ -35,9 +35,9 @@ package:
 custom:
   esbuild:
     bundle: true
-    minify: true
+    minify: false
     sourcemap: true
 
 functions:
-  samples: ${file(src/samples/application/serverless/function.yml)}
-  users: ${file(src/users/application/serverless/function.yml)}
+  - ${file(src/samples/application/serverless/events.yml)}
+  - ${file(src/users/application/serverless/events.yml)}

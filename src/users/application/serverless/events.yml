@@ -1,0 +1,24 @@
+"user-lambdafunction":
+  handler: "src/users/handler.users"
+  description: "Función lambda para USER"
+  events:
+    - http:
+        path: "users"
+        method: get
+        cors: true
+    - http:
+        path: "users/{id}"
+        method: get
+        cors: true
+    - http:
+        path: "users"
+        method: post
+        cors: true
+    - http:
+        path: "users/{id}"
+        method: put
+        cors: true
+    - http:
+        path: "users/{id}"
+        method: delete
+        cors: true

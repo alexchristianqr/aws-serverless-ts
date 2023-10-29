@@ -1,0 +1,24 @@
+"sample-lambdafunction":
+  handler: "src/samples/handler.samples"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "samples"
+        method: get
+        cors: true
+    - http:
+        path: "samples/{id}"
+        method: get
+        cors: true
+    - http:
+        path: "samples"
+        method: post
+        cors: true
+    - http:
+        path: "samples/{id}"
+        method: put
+        cors: true
+    - http:
+        path: "samples/{id}"
+        method: delete
+        cors: true

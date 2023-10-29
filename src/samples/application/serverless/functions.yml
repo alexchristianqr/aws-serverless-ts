@@ -1,0 +1,40 @@
+getSamples:
+  handler: "src/samples/handler.samples"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "samples"
+        method: get
+        cors: true
+getSampleById:
+  handler: "src/samples/handler.samples"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "samples/{id}"
+        method: get
+        cors: true
+createSample:
+  handler: "src/samples/handler.samples"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "samples"
+        method: post
+        cors: true
+updateSampleById:
+  handler: "src/samples/handler.samples"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "samples/{id}"
+        method: put
+        cors: true
+removeSampleById:
+  handler: "src/samples/handler.samples"
+  description: "Función lambda para SAMPLE"
+  events:
+    - http:
+        path: "samples/{id}"
+        method: delete
+        cors: true
