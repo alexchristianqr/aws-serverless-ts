@@ -1,30 +1,29 @@
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosStatic, isAxiosError } from "axios"
+import axios, { AxiosError, AxiosRequestConfig, AxiosStatic, isAxiosError } from "axios"
+import { ErrorResponseService } from "../responses/error-response.service.ts"
 
-class ResponseError extends Error {
-  private declare status: number | undefined
-  private declare data?: unknown
-
-  constructor(error: AxiosResponse | undefined) {
-    super(error?.data.message)
-    this.status = error?.status
-    this.message = error?.data.message
-    this.data = error?.data
-  }
-}
-
-interface IHttpOptions {
-  isPublic?: boolean
+interface CI_AxiosRequestConfig extends AxiosRequestConfig {
   headers?: Record<string, string>
+  isPublic?: boolean
   isBlob?: boolean
 }
 
 class HttpAdapterService {
+  private config: AxiosRequestConfig = {}
+
   constructor(baseUrl: string) {
     axios.defaults.baseURL = baseUrl
   }
 
-  getHTTPClient(options?: IHttpOptions): AxiosStatic {
-    if (options?.isPublic) this.removeHeader()
+  throwError(error: AxiosError | any) {
+    if (isAxiosError(error)) {
+      return new ErrorResponseService().apiResponse({ error })
+    } else {
+      console.error(error)
+    }
+  }
+
+  getHTTPClient(config?: CI_AxiosRequestConfig): AxiosStatic {
+    if (config?.isPublic) this.removeHeader()
     return axios
   }
 
@@ -32,100 +31,91 @@ class HttpAdapterService {
     axios.defaults.headers.common = {}
   }
 
-  async get(url: string, options?: IHttpOptions): Promise<any> {
+  async get(url: string, config?: CI_AxiosRequestConfig): Promise<any> {
     try {
-      const config: AxiosRequestConfig = {}
-      return this.getHTTPClient(options).get(url, config)
+      return this.getHTTPClient(config).get(url, this.config)
     } catch (error) {
-      if (isAxiosError(error)) throw new ResponseError(error.response)
-      else console.error(error)
+      return this.throwError(error)
     }
   }
 
-  async post<T>(url: string, data?: T | Record<string, unknown>, options?: IHttpOptions): Promise<any> {
+  async post<T>(url: string, data?: T | Record<string, unknown>, config?: CI_AxiosRequestConfig): Promise<any> {
     try {
-      const config: AxiosRequestConfig = {
-        responseType: options?.isBlob ? "blob" : "json",
+      this.config = {
+        responseType: config?.isBlob ? "blob" : "json",
         headers: {
-          ...options?.headers
+          ...config?.headers
         }
       }
-      return this.getHTTPClient(options).post(url, data, config)
+      return this.getHTTPClient(config).post(url, data, this.config)
     } catch (error) {
-      if (isAxiosError(error)) throw new ResponseError(error.response)
-      else console.error(error)
+      return this.throwError(error)
     }
   }
 
-  async put<T>(url: string, data?: T | Record<string, unknown>, options?: IHttpOptions): Promise<any> {
+  async put<T>(url: string, data?: T | Record<string, unknown>, config?: CI_AxiosRequestConfig): Promise<any> {
     try {
-      return this.getHTTPClient(options).put(url, data)
+      return this.getHTTPClient(config).put(url, data, this.config)
     } catch (error) {
-      if (isAxiosError(error)) throw new ResponseError(error.response)
-      else console.error(error)
+      return this.throwError(error)
     }
   }
 
-  async patch(url: string, data?: Record<string, unknown>, options?: IHttpOptions): Promise<any> {
+  async patch(url: string, data?: Record<string, unknown>, config?: CI_AxiosRequestConfig): Promise<any> {
     try {
-      return this.getHTTPClient(options).patch(url, data)
+      return this.getHTTPClient(config).patch(url, data, this.config)
     } catch (error) {
-      if (isAxiosError(error)) throw new ResponseError(error.response)
-      else console.error(error)
+      return this.throwError(error)
     }
   }
 
-  async delete(url: string, data?: Record<string, unknown>, options?: IHttpOptions): Promise<any> {
+  async delete(url: string, data?: Record<string, unknown>, config?: CI_AxiosRequestConfig): Promise<any> {
     try {
-      const config: AxiosRequestConfig = { data }
-      return this.getHTTPClient(options).delete(url, config)
+      this.config = { data }
+      return this.getHTTPClient(config).delete(url, this.config)
     } catch (error) {
-      if (isAxiosError(error)) throw new ResponseError(error.response)
-      else console.error(error)
+      return this.throwError(error)
     }
   }
 
   // --
 
-  async getBlob(url: string, options?: IHttpOptions) {
+  async getBlob(url: string, config?: CI_AxiosRequestConfig) {
     try {
-      const config: AxiosRequestConfig = {
+      this.config = {
         responseType: "blob"
       }
-      return this.getHTTPClient(options).get(url, config)
+      return this.getHTTPClient(config).get(url, this.config)
     } catch (error) {
-      if (isAxiosError(error)) throw new ResponseError(error.response)
-      else console.error(error)
+      return this.throwError(error)
     }
   }
 
-  async upload(url: string, data?: Record<string, unknown>, options?: IHttpOptions) {
+  async upload(url: string, data?: Record<string, unknown>, config?: CI_AxiosRequestConfig) {
     try {
-      const config: AxiosRequestConfig = {
+      this.config = {
         headers: {
           "Content-Type": "multipart/form-data",
-          ...options?.headers
+          ...config?.headers
         }
       }
-      return this.getHTTPClient(options).postForm(url, data, config)
+      return this.getHTTPClient(config).postForm(url, data, this.config)
     } catch (error) {
-      if (isAxiosError(error)) throw new ResponseError(error.response)
-      else console.error(error)
+      return this.throwError(error)
     }
   }
 
-  async uploadPut(url: string, data?: Record<string, unknown>, options?: IHttpOptions) {
+  async uploadPut(url: string, data?: Record<string, unknown>, config?: CI_AxiosRequestConfig) {
     try {
-      const config: AxiosRequestConfig = {
+      this.config = {
         headers: {
-          ...options?.headers,
+          ...config?.headers,
           "Content-Type": "multipart/form-data"
         }
       }
-      return this.getHTTPClient(options).put(url, data, config)
+      return this.getHTTPClient(config).put(url, data, this.config)
     } catch (error) {
-      if (isAxiosError(error)) throw new ResponseError(error.response)
-      else console.error(error)
+      return this.throwError(error)
     }
   }
 }

@@ -1,4 +1,4 @@
-import { HttpStatusCodes } from "../../enums/http-status-code.enum.ts"
+import { HttpStatusCodes } from "../../enums"
 
 interface Body {
   statusCode?: HttpStatusCodes
@@ -22,7 +22,7 @@ export class SendResponseService {
   }
   private response: Response = { statusCode: HttpStatusCodes.OK, body: JSON.stringify(this.payload.body) }
 
-  apiResponse(payload: Body): Response {
+  async apiResponse(payload: Body): Promise<Response> {
     this.payload.body.statusCode = payload?.statusCode || HttpStatusCodes.OK
     this.payload.body.success = payload?.success || true
     this.payload.body.result = payload?.result || undefined

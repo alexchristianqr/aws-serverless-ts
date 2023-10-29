@@ -23,7 +23,7 @@ export class ErrorResponseService {
   }
   private response: Response = { statusCode: HttpStatusCodes.INTERNAL_SERVER, body: JSON.stringify(this.payload.body) }
 
-  apiResponse(payload: Body): Response {
+  async apiResponse(payload: Body): Promise<Response> {
     this.payload.body.statusCode = payload?.statusCode || HttpStatusCodes.INTERNAL_SERVER
     this.payload.body.success = payload?.success || false
     this.payload.body.message = payload?.error?.message || payload?.message
