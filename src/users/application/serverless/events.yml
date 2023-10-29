@@ -1,4 +1,4 @@
-USERS-MODULE-LF:
+USERSMODULELF:
   handler: "src/users/handler.users"
   description: "Lambda function para el modulo de users"
   events:

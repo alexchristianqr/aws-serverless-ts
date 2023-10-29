@@ -1,4 +1,4 @@
-GET-USERS:
+GETUSERS:
   handler: "src/users/handler.users"
   description: "LF para obtener usuarios"
   events:
@@ -7,7 +7,7 @@ GET-USERS:
         method: get
         cors: true
 
-GET-USER-BY-ID:
+GETUSERBYID:
   handler: "src/users/handler.users"
   description: "LF para obtener usuario por ID"
   events:
@@ -16,7 +16,7 @@ GET-USER-BY-ID:
         method: get
         cors: true
 
-CREATE-USER:
+CREATEUSER:
   handler: "src/users/handler.users"
   description: "LF para crear usuario"
   events:
@@ -25,7 +25,7 @@ CREATE-USER:
         method: post
         cors: true
 
-UPDATE-USER-BY-ID:
+UPDATEUSERBYID:
   handler: "src/users/handler.users"
   description: "LF para actualizar usuario por ID"
   events:
@@ -34,7 +34,7 @@ UPDATE-USER-BY-ID:
         method: put
         cors: true
 
-DELETE-USER-BY-ID:
+DELETEUSERBYID:
   handler: "src/users/handler.users"
   description: "LF para eliminar usuario por ID"
   events:

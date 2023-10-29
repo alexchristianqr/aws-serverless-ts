@@ -1,4 +1,4 @@
-GET-SAMPLES:
+GETSAMPLES:
   handler: "src/samples/handler.samples"
   description: "LF para obtener muestras"
   events:
@@ -7,7 +7,7 @@ GET-SAMPLES:
         method: get
         cors: true
 
-GET-SAMPLES-BY-ID:
+GETSAMPLESBYID:
   handler: "src/samples/handler.samples"
   description: "LF para obtener muestra por ID"
   events:
@@ -16,7 +16,7 @@ GET-SAMPLES-BY-ID:
         method: get
         cors: true
 
-CREATE-SAMPLE:
+CREATESAMPLE:
   handler: "src/samples/handler.samples"
   description: "LF para crear muestra"
   events:
@@ -25,7 +25,7 @@ CREATE-SAMPLE:
         method: post
         cors: true
 
-UPDATE-SAMPLE-BY-ID:
+UPDATESAMPLEBYID:
   handler: "src/samples/handler.samples"
   description: "LF para actualizar muestra por ID"
   events:
@@ -34,7 +34,7 @@ UPDATE-SAMPLE-BY-ID:
         method: put
         cors: true
 
-DELETE-SAMPLE-BY-ID:
+DELETESAMPLEBYID:
   handler: "src/samples/handler.samples"
   description: "LF para eliminar muestra por ID"
   events:

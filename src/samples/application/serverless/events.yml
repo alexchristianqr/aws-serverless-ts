@@ -1,4 +1,4 @@
-SAMPLES-MODULE-LF:
+SAMPLESMODULELF:
   handler: "src/samples/handler.samples"
   description: "Lambda function para el modulo de samples"
   events:
