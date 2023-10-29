@@ -1,38 +1,42 @@
-getUsers:
+GET-USERS:
   handler: "src/users/handler.users"
-  description: "Función lambda para USER"
+  description: "LF para obtener usuarios"
   events:
     - http:
         path: "users"
         method: get
         cors: true
-getUserById:
+
+GET-USER-BY-ID:
   handler: "src/users/handler.users"
-  description: "Función lambda para SAMPLE"
+  description: "LF para obtener usuario por ID"
   events:
     - http:
         path: "users/{id}"
         method: get
         cors: true
-createUser:
+
+CREATE-USER:
   handler: "src/users/handler.users"
-  description: "Función lambda para SAMPLE"
+  description: "LF para crear usuario"
   events:
     - http:
         path: "users"
         method: post
         cors: true
-updateUserById:
+
+UPDATE-USER-BY-ID:
   handler: "src/users/handler.users"
-  description: "Función lambda para SAMPLE"
+  description: "LF para actualizar usuario por ID"
   events:
     - http:
         path: "users/{id}"
         method: put
         cors: true
-removeUserById:
+
+DELETE-USER-BY-ID:
   handler: "src/users/handler.users"
-  description: "Función lambda para SAMPLE"
+  description: "LF para eliminar usuario por ID"
   events:
     - http:
         path: "users/{id}"

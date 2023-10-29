@@ -1,6 +1,6 @@
-"sample-lambdafunction":
+SAMPLES-MODULE-LF:
   handler: "src/samples/handler.samples"
-  description: "Función lambda para SAMPLE"
+  description: "Lambda function para el modulo de samples"
   events:
     - http:
         path: "samples"

@@ -1,38 +1,42 @@
-getSamples:
+GET-SAMPLES:
   handler: "src/samples/handler.samples"
-  description: "Función lambda para SAMPLE"
+  description: "LF para obtener muestras"
   events:
     - http:
         path: "samples"
         method: get
         cors: true
-getSampleById:
+
+GET-SAMPLES-BY-ID:
   handler: "src/samples/handler.samples"
-  description: "Función lambda para SAMPLE"
+  description: "LF para obtener muestra por ID"
   events:
     - http:
         path: "samples/{id}"
         method: get
         cors: true
-createSample:
+
+CREATE-SAMPLE:
   handler: "src/samples/handler.samples"
-  description: "Función lambda para SAMPLE"
+  description: "LF para crear muestra"
   events:
     - http:
         path: "samples"
         method: post
         cors: true
-updateSampleById:
+
+UPDATE-SAMPLE-BY-ID:
   handler: "src/samples/handler.samples"
-  description: "Función lambda para SAMPLE"
+  description: "LF para actualizar muestra por ID"
   events:
     - http:
         path: "samples/{id}"
         method: put
         cors: true
-removeSampleById:
+
+DELETE-SAMPLE-BY-ID:
   handler: "src/samples/handler.samples"
-  description: "Función lambda para SAMPLE"
+  description: "LF para eliminar muestra por ID"
   events:
     - http:
         path: "samples/{id}"

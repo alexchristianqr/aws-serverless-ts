@@ -1,6 +1,6 @@
-"user-lambdafunction":
+USERS-MODULE-LF:
   handler: "src/users/handler.users"
-  description: "Función lambda para USER"
+  description: "Lambda function para el modulo de users"
   events:
     - http:
         path: "users"
