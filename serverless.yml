@@ -35,7 +35,7 @@ package:
 custom:
   esbuild:
     bundle: true
-    minify: false
+    minify: true
     sourcemap: true
 
 functions:
