@@ -1,5 +1,5 @@
 import { CC_InvokeCommand, CC_LambdaClient, CI_InvokeCommandInput } from "../../interfaces"
-import { ErrorResponseService } from "../responses/error-response.service.ts"
+import { ErrorResponseService } from "../responses"
 
 export class LambdafunctionAdapterService {
   static async invokeFunction(input: CI_InvokeCommandInput) {

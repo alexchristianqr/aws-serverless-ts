@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosStatic, isAxiosError } from "axios"
-import { ErrorResponseService } from "../responses/error-response.service.ts"
+import { ErrorResponseService } from "../responses"
 
 interface CI_AxiosRequestConfig extends AxiosRequestConfig {
   headers?: Record<string, string>
