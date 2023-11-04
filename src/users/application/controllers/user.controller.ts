@@ -1,22 +1,14 @@
-import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts"
-import { SampleEntity } from "../../domain/entities/sample.entity.ts"
-import { SampleUsecase } from "../use-cases/sample.usecase.ts"
+import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context } from "../../../core"
+import { UserLocalRepository } from "../../infrastructure/database/repositories/user-local.repository.ts"
+import { UserEntity } from "../../domain/entities/user.entity.ts"
+import { UserUsecase } from "../use-cases/user.usecase.ts"
 import { CreateSampleDto } from "../dtos/create-sample.dto.ts"
 import { UpdateSampleDto } from "../dtos/update-sample.dto.ts"
-import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context } from "../../../core"
 
-interface Route {
-  path: string
-  callback: Function
-}
-interface IRoutes {
-  [key: string]: Route[]
-}
-interface Model extends SampleEntity {}
+interface Model extends UserEntity {}
 
 export class UserController extends CoreService<Model> {
-  private readonly repository: SampleLocalRepository = new SampleLocalRepository()
-  private readonly sampleUsecase: SampleUsecase = new SampleUsecase(this.repository)
+  private readonly sampleUsecase: UserUsecase = new UserUsecase(new UserLocalRepository())
   private result: any
 
   constructor(event: CI_APIGatewayProxyEvent, context: CI_Context) {
@@ -28,17 +20,25 @@ export class UserController extends CoreService<Model> {
     return this.event.resource === path
   }
 
-  async selectResource() {
+  selectResource() {
     console.log("[UserController.selectResource]")
+
+    interface Route {
+      path: string
+      callback: Function
+    }
+    interface IRoutes {
+      [key: string]: Route[]
+    }
 
     const routes: IRoutes = {
       GET: [
-        { path: "/users", callback: () => this.findAll() },
-        { path: "/users/{id}", callback: () => this.find(this.params.id) }
+        { path: "/users", callback: () => this.getUsers() },
+        { path: "/users/{id}", callback: () => this.getUserById(this.params.id) }
       ],
-      POST: [{ path: "/users", callback: () => this.create(this.body.payload) }],
-      PUT: [{ path: "/users/{id}", callback: () => this.update(this.params.id, this.body.payload) }],
-      DELETE: [{ path: "/users/{id}", callback: () => this.delete(this.params.id) }]
+      POST: [{ path: "/users", callback: () => this.createUser(this.body.payload) }],
+      PUT: [{ path: "/users/{id}", callback: () => this.updateUser(this.params.id, this.body.payload) }],
+      DELETE: [{ path: "/users/{id}", callback: () => this.deleteUser(this.params.id) }]
     }
 
     const method: string | undefined | null = this.event?.httpMethod?.toUpperCase()
@@ -55,11 +55,11 @@ export class UserController extends CoreService<Model> {
     return this.response.error.apiResponse({ message: "Recurso no encontrado" })
   }
 
-  async create(data: CreateSampleDto) {
+  async createUser(data: CreateSampleDto) {
     console.log("[UserController.create]", { data })
 
     try {
-      this.result = await this.sampleUsecase.create(data)
+      this.result = await this.sampleUsecase.createUser(data)
       return this.response.send.apiResponse({
         message: "Sample created",
         result: this.result,
@@ -70,33 +70,33 @@ export class UserController extends CoreService<Model> {
     }
   }
 
-  async delete(id: number) {
+  async deleteUser(id: number) {
     console.log("[UserController.delete]", { id })
 
     try {
-      this.result = await this.sampleUsecase.delete(id)
+      this.result = await this.sampleUsecase.deleteUser(id)
       return this.response.send.apiResponse({ message: "Delete user", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }
   }
 
-  async find(id: number) {
-    console.log("[UserController.find]", { id })
+  async getUserById(id: number) {
+    console.log("[UserController.getUserById]", { id })
 
     try {
-      this.result = await this.sampleUsecase.find(id)
+      this.result = await this.sampleUsecase.getUserById(id)
       return this.response.send.apiResponse({ message: "Single user", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }
   }
 
-  async findAll() {
-    console.log("[UserController.findAll]")
+  async getUsers() {
+    console.log("[UserController.getUsers]")
 
     try {
-      this.result = await this.sampleUsecase.findAll()
+      this.result = await this.sampleUsecase.getUsers()
       //
       return this.response.send.apiResponse({ message: "All users", result: this.result })
     } catch (error) {
@@ -104,14 +104,34 @@ export class UserController extends CoreService<Model> {
     }
   }
 
-  async update(id: number, data: UpdateSampleDto) {
-    console.log("[UserController.update]", { id, data })
+  async updateUser(id: number, data: UpdateSampleDto) {
+    console.log("[UserController.updateUser]", { id, data })
 
     try {
-      await this.sampleUsecase.update(id, data)
+      await this.sampleUsecase.updateUser(id, data)
       return this.response.send.apiResponse({ message: "Update user", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
     }
   }
+
+  // createUser(data: ICreateSampleDto): Promise<ICreateSampleDto> {
+  //   return Promise.resolve(undefined)
+  // }
+  //
+  // deleteUser(id: number): Promise<boolean> {
+  //   return Promise.resolve(false)
+  // }
+  //
+  // getUser(id: number): Promise<UserEntity | null> {
+  //   return Promise.resolve(undefined)
+  // }
+  //
+  // getUsers(): Promise<Array<IGetSampleBasicDto>> {
+  //   return Promise.resolve(undefined)
+  // }
+  //
+  // updateUser(id: number, data: IUpdateSampleDto): Promise<boolean> {
+  //   return Promise.resolve(false)
+  // }
 }

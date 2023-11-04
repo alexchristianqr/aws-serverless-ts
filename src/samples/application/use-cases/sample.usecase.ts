@@ -1,4 +1,4 @@
-import { SampleInputService } from "../../domain/ports/input/sample-input.service.ts"
+import { SampleInputUsecase } from "../../domain/ports/input/sample-input.usecase.ts"
 import { SampleOutputRepository } from "../../domain/ports/output/sample-output.repository.ts"
 import { SampleEntity } from "../../domain/entities/sample.entity.ts"
 import { CreateSampleDto, ICreateSampleDto } from "../dtos/create-sample.dto.ts"
@@ -7,34 +7,29 @@ import { GetSampleBasicDto, IGetSampleBasicDto } from "../dtos/get-sample-basic.
 
 interface Model extends SampleEntity {}
 
-export class SampleUsecase implements SampleInputService {
+export class SampleUsecase implements SampleInputUsecase {
   constructor(private readonly repository: SampleOutputRepository<Model>) {}
 
-  create(data: ICreateSampleDto): Promise<ICreateSampleDto> {
+  createSample(data: ICreateSampleDto): Promise<ICreateSampleDto> {
     const sample: ICreateSampleDto = new CreateSampleDto(data)
     return this.repository.create(sample)
   }
 
-  delete(id: number): Promise<boolean> {
+  deleteSample(id: number): Promise<boolean> {
     return this.repository.delete(id)
   }
 
-  find(id: number): Promise<Model | null> {
-    return this.repository.find(id)
+  getSampleById(id: number): Promise<Model | null> {
+    return this.repository.getById(id)
   }
 
-  async findAll(): Promise<Array<IGetSampleBasicDto>> {
-    const samples: Array<Model> = await this.repository.findAll()
+  async getSamples(): Promise<Array<IGetSampleBasicDto>> {
+    const samples: Array<Model> = await this.repository.getAll()
     return samples.map((item: Model) => new GetSampleBasicDto(item))
   }
 
-  update(id: number, data: IUpdateSampleDto): Promise<boolean> {
+  updateSample(id: number, data: IUpdateSampleDto): Promise<boolean> {
     const sample: IUpdateSampleDto = new UpdateSampleDto(data)
     return this.repository.update(id, sample)
-  }
-
-  updateField(id: number, key: string, value: any): Promise<boolean> {
-    console.log({ id, key, value })
-    return Promise.resolve(false)
   }
 }

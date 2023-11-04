@@ -1,5 +1,4 @@
-import { SendResponseService } from "./responses/send-response.service.ts"
-import { ErrorResponseService } from "./responses/error-response.service.ts"
+import { SendResponseService, ErrorResponseService } from "./responses"
 import { ProxyEventMiddleware } from "../middlewares"
 
 export abstract class CoreService<T> extends ProxyEventMiddleware<T> {

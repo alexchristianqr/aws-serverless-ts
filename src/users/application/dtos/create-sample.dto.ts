@@ -1,6 +1,6 @@
-import { SampleEntity } from "../../domain/entities/sample.entity.ts"
+import { UserEntity } from "../../domain/entities/user.entity.ts"
 
-export abstract class ICreateSampleDto extends SampleEntity {}
+export abstract class ICreateSampleDto extends UserEntity {}
 
 export class CreateSampleDto extends ICreateSampleDto {
   constructor(data?: ICreateSampleDto) {

@@ -1,4 +1,4 @@
-export abstract class SampleEntity {
+export abstract class UserEntity {
   id?: number
   name?: string
   lastname?: string

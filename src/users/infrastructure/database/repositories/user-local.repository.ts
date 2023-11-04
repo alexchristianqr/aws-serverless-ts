@@ -1,10 +1,10 @@
-import { SampleOutputRepository } from "../../../domain/ports/output/sample-output.repository.ts"
-import { SampleEntity } from "../../../domain/entities/sample.entity.ts"
+import { UserOutputRepository } from "../../../domain/ports/output/user-output.repository.ts"
+import { UserEntity } from "../../../domain/entities/user.entity.ts"
 import dataJSON from "../../../../../data.json"
 
-interface Model extends SampleEntity {}
+interface Model extends UserEntity {}
 
-export class SampleLocalRepository implements SampleOutputRepository<Model> {
+export class UserLocalRepository implements UserOutputRepository<Model> {
   private items: Array<Model> = dataJSON.data
 
   async create(data: Model): Promise<Model> {
@@ -17,13 +17,13 @@ export class SampleLocalRepository implements SampleOutputRepository<Model> {
     return true
   }
 
-  async find(id?: number): Promise<Model | null> {
+  async getById(id?: number): Promise<Model | null> {
     const sample: Model | undefined = this.items.find((item) => item.id == id)
     if (!sample) return null
     return sample
   }
 
-  async findAll(): Promise<Array<Model>> {
+  async getAll(): Promise<Array<Model>> {
     return this.items
   }
 

@@ -17,13 +17,13 @@ export class SampleLocalRepository implements SampleOutputRepository<Model> {
     return true
   }
 
-  async find(id?: number): Promise<Model | null> {
+  async getById(id?: number): Promise<Model | null> {
     const sample: Model | undefined = this.items.find((item) => item.id == id)
     if (!sample) return null
     return sample
   }
 
-  async findAll(): Promise<Array<Model>> {
+  async getAll(): Promise<Array<Model>> {
     return this.items
   }
 
