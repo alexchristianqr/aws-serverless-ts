@@ -2,8 +2,8 @@ import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context } fro
 import { UserLocalRepository } from "../../infrastructure/database/repositories/user-local.repository.ts"
 import { UserEntity } from "../../domain/entities/user.entity.ts"
 import { UserUsecase } from "../use-cases/user.usecase.ts"
-import { CreateSampleDto } from "../dtos/create-sample.dto.ts"
-import { UpdateSampleDto } from "../dtos/update-sample.dto.ts"
+import { CreateUserDto } from "../dtos/create-user.dto.ts"
+import { UpdateUserDto } from "../dtos/update-user.dto.ts"
 
 interface Model extends UserEntity {}
 
@@ -55,7 +55,7 @@ export class UserController extends CoreService<Model> {
     return this.response.error.apiResponse({ message: "Recurso no encontrado" })
   }
 
-  async createUser(data: CreateSampleDto) {
+  async createUser(data: CreateUserDto) {
     console.log("[UserController.create]", { data })
 
     try {
@@ -104,7 +104,7 @@ export class UserController extends CoreService<Model> {
     }
   }
 
-  async updateUser(id: number, data: UpdateSampleDto) {
+  async updateUser(id: number, data: UpdateUserDto) {
     console.log("[UserController.updateUser]", { id, data })
 
     try {

@@ -1,7 +1,7 @@
 import { UserEntity } from "../../entities/user.entity.ts"
-import { ICreateSampleDto } from "../../../application/dtos/create-sample.dto.ts"
-import { IUpdateSampleDto } from "../../../application/dtos/update-sample.dto.ts"
-import { IGetSampleBasicDto } from "../../../application/dtos/get-sample-basic.dto.ts"
+import { ICreateSampleDto } from "../../../application/dtos/create-user.dto.ts"
+import { IUpdateSampleDto } from "../../../application/dtos/update-user.dto.ts"
+import { IGetSampleBasicDto } from "../../../application/dtos/get-user-basic.dto.ts"
 
 export abstract class UserInputUsecase {
   abstract createUser(data: ICreateSampleDto): Promise<ICreateSampleDto>

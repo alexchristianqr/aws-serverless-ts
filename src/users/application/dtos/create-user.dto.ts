@@ -2,7 +2,7 @@ import { UserEntity } from "../../domain/entities/user.entity.ts"
 
 export abstract class ICreateSampleDto extends UserEntity {}
 
-export class CreateSampleDto extends ICreateSampleDto {
+export class CreateUserDto extends ICreateSampleDto {
   constructor(data?: ICreateSampleDto) {
     super()
     this.validate(data)

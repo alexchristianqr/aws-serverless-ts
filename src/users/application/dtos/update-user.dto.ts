@@ -1,9 +1,9 @@
 import { UserEntity } from "../../domain/entities/user.entity.ts"
 
-export abstract class IUpdateSampleDto extends UserEntity {}
+export abstract class IUpdateUserDto extends UserEntity {}
 
-export class UpdateSampleDto extends IUpdateSampleDto {
-  constructor(data?: IUpdateSampleDto) {
+export class UpdateUserDto extends IUpdateUserDto {
+  constructor(data?: IUpdateUserDto) {
     super()
 
     this.name = data?.name
