@@ -1,11 +1,9 @@
-import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context } from "../../../core"
+import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context, IRoutes } from "../../../core"
 import { UserLocalRepository } from "../../infrastructure/database/repositories/user-local.repository.ts"
-import { UserEntity } from "../../domain/entities/user.entity.ts"
 import { UserUsecase } from "../use-cases/user.usecase.ts"
 import { CreateUserDto } from "../dtos/create-user.dto.ts"
 import { UpdateUserDto } from "../dtos/update-user.dto.ts"
-
-interface Model extends UserEntity {}
+import { Model } from "../../domain/entities/user.entity.ts"
 
 export class UserController extends CoreService<Model> {
   private readonly sampleUsecase: UserUsecase = new UserUsecase(new UserLocalRepository())
@@ -16,20 +14,8 @@ export class UserController extends CoreService<Model> {
     super(event, context)
   }
 
-  resourceIsValid(path: string) {
-    return this.event.resource === path
-  }
-
   selectResource() {
     console.log("[UserController.selectResource]")
-
-    interface Route {
-      path: string
-      callback: Function
-    }
-    interface IRoutes {
-      [key: string]: Route[]
-    }
 
     const routes: IRoutes = {
       GET: [
@@ -114,24 +100,4 @@ export class UserController extends CoreService<Model> {
       return this.response.error.apiResponse({ error: error })
     }
   }
-
-  // createUser(data: ICreateSampleDto): Promise<ICreateSampleDto> {
-  //   return Promise.resolve(undefined)
-  // }
-  //
-  // deleteUser(id: number): Promise<boolean> {
-  //   return Promise.resolve(false)
-  // }
-  //
-  // getUser(id: number): Promise<UserEntity | null> {
-  //   return Promise.resolve(undefined)
-  // }
-  //
-  // getUsers(): Promise<Array<IGetSampleBasicDto>> {
-  //   return Promise.resolve(undefined)
-  // }
-  //
-  // updateUser(id: number, data: IUpdateSampleDto): Promise<boolean> {
-  //   return Promise.resolve(false)
-  // }
 }

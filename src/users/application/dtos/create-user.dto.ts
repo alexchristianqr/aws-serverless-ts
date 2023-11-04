@@ -1,9 +1,9 @@
 import { UserEntity } from "../../domain/entities/user.entity.ts"
 
-export abstract class ICreateSampleDto extends UserEntity {}
+export abstract class ICreateUserDto extends UserEntity {}
 
-export class CreateUserDto extends ICreateSampleDto {
-  constructor(data?: ICreateSampleDto) {
+export class CreateUserDto extends ICreateUserDto {
+  constructor(data?: ICreateUserDto) {
     super()
     this.validate(data)
 
@@ -13,7 +13,7 @@ export class CreateUserDto extends ICreateSampleDto {
     this.age = data?.age
   }
 
-  validate(data?: ICreateSampleDto) {
+  validate(data?: ICreateUserDto) {
     if (!data) throw new Error("[data] no existe")
     if (!data?.id) throw new Error("[id] es necesario")
     if (!data?.name) throw new Error("[nombre] es necesario")

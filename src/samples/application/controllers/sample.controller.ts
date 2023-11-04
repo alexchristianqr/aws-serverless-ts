@@ -1,11 +1,9 @@
+import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context, IRoutes } from "../../../core"
 import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts"
-import { SampleEntity } from "../../domain/entities/sample.entity.ts"
+import { Model } from "../../domain/entities/sample.entity.ts"
 import { SampleUsecase } from "../use-cases/sample.usecase.ts"
 import { CreateSampleDto } from "../dtos/create-sample.dto.ts"
 import { UpdateSampleDto } from "../dtos/update-sample.dto.ts"
-import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context } from "../../../core"
-
-interface Model extends SampleEntity {}
 
 export class SampleController extends CoreService<Model> {
   private readonly sampleUsecase: SampleUsecase = new SampleUsecase(new SampleLocalRepository())
@@ -16,20 +14,8 @@ export class SampleController extends CoreService<Model> {
     super(event, context)
   }
 
-  resourceIsValid(path: string) {
-    return this.event.resource === path
-  }
-
-  async selectResource() {
+  selectResource() {
     console.log("[SampleController.selectResource]")
-
-    interface Route {
-      path: string
-      callback: Function
-    }
-    interface IRoutes {
-      [key: string]: Route[]
-    }
 
     const routes: IRoutes = {
       GET: [

@@ -1,17 +1,15 @@
 import { UserInputUsecase } from "../../domain/ports/input/user-input.usecase.ts"
 import { UserOutputRepository } from "../../domain/ports/output/user-output.repository.ts"
-import { UserEntity } from "../../domain/entities/user.entity.ts"
-import { CreateUserDto, ICreateSampleDto } from "../dtos/create-user.dto.ts"
+import { Model } from "../../domain/entities/user.entity.ts"
+import { CreateUserDto, ICreateUserDto } from "../dtos/create-user.dto.ts"
 import { IUpdateUserDto, UpdateUserDto } from "../dtos/update-user.dto.ts"
 import { GetUserBasicDto, IGetUserBasicDto } from "../dtos/get-user-basic.dto.ts"
-
-interface Model extends UserEntity {}
 
 export class UserUsecase implements UserInputUsecase {
   constructor(private readonly repository: UserOutputRepository<Model>) {}
 
-  createUser(data: ICreateSampleDto): Promise<ICreateSampleDto> {
-    const sample: ICreateSampleDto = new CreateUserDto(data)
+  createUser(data: ICreateUserDto): Promise<ICreateUserDto> {
+    const sample: ICreateUserDto = new CreateUserDto(data)
     return this.repository.create(sample)
   }
 

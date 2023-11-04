@@ -1,8 +1,6 @@
 import { UserOutputRepository } from "../../../domain/ports/output/user-output.repository.ts"
-import { UserEntity } from "../../../domain/entities/user.entity.ts"
+import { Model } from "../../../domain/entities/user.entity.ts"
 import dataJSON from "../../../../../data.json"
-
-interface Model extends UserEntity {}
 
 export class UserLocalRepository implements UserOutputRepository<Model> {
   private items: Array<Model> = dataJSON.data

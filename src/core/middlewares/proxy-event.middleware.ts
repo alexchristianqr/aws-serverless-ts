@@ -1,5 +1,14 @@
 import { CI_APIGatewayProxyEvent, CI_Context } from "../interfaces"
 
+interface Route {
+  path: string
+  callback: Function
+}
+
+export interface IRoutes {
+  [key: string]: Route[]
+}
+
 interface BodyPayload<T> {
   payload: T | any
 }
@@ -21,5 +30,9 @@ export class ProxyEventMiddleware<T> {
     if (pathParameters) this.params = pathParameters
 
     console.log({ body: this.body, params: this.params, event: this.event, context: this.context })
+  }
+
+  resourceIsValid(path: string) {
+    return this.event.resource === path
   }
 }

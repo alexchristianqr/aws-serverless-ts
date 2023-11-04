@@ -4,3 +4,5 @@ export abstract class SampleEntity {
   lastname?: string
   age?: string
 }
+
+export interface Model extends SampleEntity {}

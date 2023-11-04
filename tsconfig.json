@@ -5,6 +5,7 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "strictNullChecks": false, /* Verificación stricta del uso de NULL y UNDEFINED */
 
     /* Bundler mode */
     "moduleResolution": "bundler",

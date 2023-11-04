@@ -4,3 +4,5 @@ export abstract class UserEntity {
   lastname?: string
   age?: string
 }
+
+export interface Model extends UserEntity {}
