@@ -1,8 +1,7 @@
 import { SampleUsecase } from "../../../src/samples/application/use-cases/sample.usecase"
 import { SampleLocalRepository } from "../../../src/samples/infrastructure/database/repositories/sample-local.repository"
 import { CreateSampleDto, ICreateSampleDto } from "../../../src/samples/application/dtos/create-sample.dto"
-import { LambdafunctionAdapterService } from "../../../src/core/services/adapters/lambdafunction-adapter.service"
-import { CI_InvokeCommandInput, CV_LogType } from "../../../src/core"
+import { CI_InvokeCommandInput, CV_LogType, LambdafunctionAdapterService } from "../../../src/core"
 
 describe("Sample use case", () => {
   let repository: SampleLocalRepository
@@ -22,7 +21,7 @@ describe("Sample use case", () => {
       age: "28"
     })
 
-    result = await usecase.create(sample)
+    result = await usecase.createSample(sample)
     expect(result).toEqual(sample)
 
     const input: CI_InvokeCommandInput = {
@@ -39,7 +38,7 @@ describe("Sample use case", () => {
 
     const id = result?.id
 
-    result = await repository.find(id)
+    result = await repository.getById(id)
     expect(result).toEqual(sample)
   })
 })
