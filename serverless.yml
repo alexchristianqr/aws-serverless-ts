@@ -21,7 +21,7 @@ provider:
   iam:
     role:
       statements:
-        - Effect: 'Allow'
+        - Effect: "Allow"
           Action:
             - "lambda:*"
           Resource: "*"
@@ -37,6 +37,14 @@ custom:
     bundle: true
     minify: true
     sourcemap: true
+
+layers:
+  base:
+    name: "app-dependencies"
+    compatibleArchitectures:
+      - "nodejs14.x"
+    package:
+      artifact: "app.zip"
 
 functions:
   - ${file(src/samples/application/serverless/events.yml)}

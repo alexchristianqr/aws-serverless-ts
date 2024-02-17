@@ -15,7 +15,8 @@
     "sls:local": "serverless offline --stage dev",
     "sls:deploy": "serverless deploy --stage dev",
     "sls:remove": "serverless remove --stage dev",
-    "test": "jest"
+    "test": "jest",
+    "debug": "node --inspect .\\node_modules\\serverless\\bin\\serverless offline --stage dev"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.438.0",
