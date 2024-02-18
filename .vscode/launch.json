@@ -2,11 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node-terminal",
+      "type": "node",
       "name": "Launch: npm run debug",
       "request": "launch",
-      "command": "npm run debug",
-      "cwd": "${workspaceFolder}"
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "debug"],
+      "cwd": "${workspaceFolder}",
+      "outFiles": ["${workspaceFolder}/.esbuild/.build/src/**/*.js.map"],
+      "sourceMaps": true
     }
   ]
 }

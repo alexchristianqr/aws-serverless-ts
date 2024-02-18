@@ -83,7 +83,6 @@ export class UserController extends CoreService<Model> {
 
     try {
       this.result = await this.sampleUsecase.getUsers()
-      //
       return this.response.send.apiResponse({ message: "All users", result: this.result })
     } catch (error) {
       return this.response.error.apiResponse({ error: error })
