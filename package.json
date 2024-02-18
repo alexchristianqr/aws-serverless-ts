@@ -8,11 +8,11 @@
   "repository": {
     "url": "https://github.com/alexchristianqr/aws-serverless-ts"
   },
-  "type": "commonjs",
+  "type": "module",
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "sls:local": "serverless offline --stage dev",
+    "sls:local": "serverless offline --stage dev --noPrependStageInUrl --ignoreJWTSignature --noAuth",
     "sls:deploy": "serverless deploy --stage dev",
     "sls:remove": "serverless remove --stage dev",
     "test": "jest",
