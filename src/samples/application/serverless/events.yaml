@@ -1,4 +1,5 @@
 SAMPLESMODULELF:
+  memorySize: 128 # Por defecto es 128 MB, para optimizar el lambda cambiar hasta 512 MB
   handler: "src/samples/handler.samples"
   description: "Lambda function para el modulo de samples"
   events:
