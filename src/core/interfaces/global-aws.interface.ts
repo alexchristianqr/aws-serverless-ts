@@ -1,5 +1,5 @@
-import { APIGatewayProxyEvent, APIGatewayProxyEventV2WithRequestContext, Context, APIGatewayProxyCallback, Handler, APIGatewayProxyHandler } from "aws-lambda"
-import { LambdaClient, InvokeCommandInput, InvokeAsyncCommandInput, InvokeCommand, LogType, InvokeCommandOutput } from "@aws-sdk/client-lambda"
+import { APIGatewayProxyEvent, APIGatewayProxyEventV2WithRequestContext, Context, APIGatewayProxyCallback, Handler, APIGatewayProxyHandler } from "aws-lambda";
+import { LambdaClient, InvokeCommandInput, InvokeAsyncCommandInput, InvokeCommand, LogType, InvokeCommandOutput } from "@aws-sdk/client-lambda";
 
 /* Custom Interfaces (CI_) */
 export declare interface CI_APIGatewayProxyEvent extends APIGatewayProxyEvent {}
@@ -17,4 +17,4 @@ export class CC_LambdaClient extends LambdaClient {}
 export class CC_InvokeCommand extends InvokeCommand {}
 
 /* Custom Variables (CV_) */
-export const CV_LogType = LogType
+export const CV_LogType = LogType;

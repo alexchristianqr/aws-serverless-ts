@@ -1,41 +1,41 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosStatic, isAxiosError } from "axios"
-import { ErrorResponseService } from "../responses"
+import axios, { AxiosError, AxiosRequestConfig, AxiosStatic, isAxiosError } from "axios";
+import { ErrorResponseService } from "../responses";
 
 interface CI_AxiosRequestConfig extends AxiosRequestConfig {
-  headers?: Record<string, string>
-  isPublic?: boolean
-  isBlob?: boolean
+  headers?: Record<string, string>;
+  isPublic?: boolean;
+  isBlob?: boolean;
 }
 
 class HttpAdapterService {
-  private config: AxiosRequestConfig = {}
+  private config: AxiosRequestConfig = {};
 
   constructor(baseUrl: string) {
-    axios.defaults.baseURL = baseUrl
+    axios.defaults.baseURL = baseUrl;
   }
 
   throwError(error: AxiosError | any) {
     if (isAxiosError(error)) {
-      return new ErrorResponseService().apiResponse({ error })
+      return new ErrorResponseService().apiResponse({ error });
     } else {
-      console.error(error)
+      console.error(error);
     }
   }
 
   getHTTPClient(config?: CI_AxiosRequestConfig): AxiosStatic {
-    if (config?.isPublic) this.removeHeader()
-    return axios
+    if (config?.isPublic) this.removeHeader();
+    return axios;
   }
 
   removeHeader() {
-    axios.defaults.headers.common = {}
+    axios.defaults.headers.common = {};
   }
 
   async get(url: string, config?: CI_AxiosRequestConfig): Promise<any> {
     try {
-      return this.getHTTPClient(config).get(url, this.config)
+      return this.getHTTPClient(config).get(url, this.config);
     } catch (error) {
-      return this.throwError(error)
+      return this.throwError(error);
     }
   }
 
@@ -46,35 +46,35 @@ class HttpAdapterService {
         headers: {
           ...config?.headers
         }
-      }
-      return this.getHTTPClient(config).post(url, data, this.config)
+      };
+      return this.getHTTPClient(config).post(url, data, this.config);
     } catch (error) {
-      return this.throwError(error)
+      return this.throwError(error);
     }
   }
 
   async put<T>(url: string, data?: T | Record<string, unknown>, config?: CI_AxiosRequestConfig): Promise<any> {
     try {
-      return this.getHTTPClient(config).put(url, data, this.config)
+      return this.getHTTPClient(config).put(url, data, this.config);
     } catch (error) {
-      return this.throwError(error)
+      return this.throwError(error);
     }
   }
 
   async patch(url: string, data?: Record<string, unknown>, config?: CI_AxiosRequestConfig): Promise<any> {
     try {
-      return this.getHTTPClient(config).patch(url, data, this.config)
+      return this.getHTTPClient(config).patch(url, data, this.config);
     } catch (error) {
-      return this.throwError(error)
+      return this.throwError(error);
     }
   }
 
   async delete(url: string, data?: Record<string, unknown>, config?: CI_AxiosRequestConfig): Promise<any> {
     try {
-      this.config = { data }
-      return this.getHTTPClient(config).delete(url, this.config)
+      this.config = { data };
+      return this.getHTTPClient(config).delete(url, this.config);
     } catch (error) {
-      return this.throwError(error)
+      return this.throwError(error);
     }
   }
 
@@ -84,10 +84,10 @@ class HttpAdapterService {
     try {
       this.config = {
         responseType: "blob"
-      }
-      return this.getHTTPClient(config).get(url, this.config)
+      };
+      return this.getHTTPClient(config).get(url, this.config);
     } catch (error) {
-      return this.throwError(error)
+      return this.throwError(error);
     }
   }
 
@@ -98,10 +98,10 @@ class HttpAdapterService {
           "Content-Type": "multipart/form-data",
           ...config?.headers
         }
-      }
-      return this.getHTTPClient(config).postForm(url, data, this.config)
+      };
+      return this.getHTTPClient(config).postForm(url, data, this.config);
     } catch (error) {
-      return this.throwError(error)
+      return this.throwError(error);
     }
   }
 
@@ -112,12 +112,12 @@ class HttpAdapterService {
           ...config?.headers,
           "Content-Type": "multipart/form-data"
         }
-      }
-      return this.getHTTPClient(config).put(url, data, this.config)
+      };
+      return this.getHTTPClient(config).put(url, data, this.config);
     } catch (error) {
-      return this.throwError(error)
+      return this.throwError(error);
     }
   }
 }
 
-export const httpAdapterService = new HttpAdapterService("MY_URL_ENDPOINT")
+export const httpAdapterService = new HttpAdapterService("MY_URL_ENDPOINT");

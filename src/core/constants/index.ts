@@ -1,1 +1,1 @@
-export * from "./message-response.constant.ts"
+export * from "./message-response.constant.ts";

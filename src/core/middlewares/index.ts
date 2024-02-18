@@ -1,1 +1,1 @@
-export * from "./proxy-event.middleware.ts"
+export * from "./proxy-event.middleware.ts";

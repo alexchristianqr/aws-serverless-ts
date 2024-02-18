@@ -1,1 +1,1 @@
-export * from "./http-status-code.enum.ts"
+export * from "./http-status-code.enum.ts";

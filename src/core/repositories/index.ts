@@ -1,1 +1,1 @@
-export * from "./generic-provider.repository.ts"
+export * from "./generic-provider.repository.ts";
