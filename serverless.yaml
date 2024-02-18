@@ -1,4 +1,4 @@
-service: "AWSTEMPLATE"
+service: "AWSTEMPLATETS"
 
 plugins:
   - serverless-esbuild
@@ -47,5 +47,5 @@ custom:
 #       artifact: "app.zip"
 
 functions:
-  - ${file(src/samples/application/serverless/events.yml)}
-  - ${file(src/users/application/serverless/events.yml)}
+  - ${file(src/samples/application/serverless/events.yaml)}
+  - ${file(src/users/application/serverless/events.yaml)}
