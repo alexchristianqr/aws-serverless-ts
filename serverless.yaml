@@ -10,14 +10,19 @@ useDotenv: true
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: ${env:AWS_RUNTIME}
   stage: ${sls:stage}
-  region: us-east-1
+  region: ${env:AWS_REGION}
+  timeout: 30 # Por defecto es 3 segundos, establecer a 30 para un correcto debug
+
+  # AWS Bucket S3
   deploymentBucket:
-    name: ${env:BUCKET_S3_NAME} # serverless-${self:service}-${sls:stage}
+    name: ${env:AWS_BUCKET_S3_NAME} # serverless-${self:service}-${sls:stage}
     blockPublicAccess: true
     versioning: true
     serverSideEncryption: AES256
+
+  # AWS IAM
   iam:
     role:
       statements:
