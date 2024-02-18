@@ -2,11 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
       "name": "Launch: npm run debug",
+      "type": "node",
       "request": "launch",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "debug"],
+      "runtimeArgs": ["run-script", "debug"],
+      "skipFiles": ["<node_internals>/**"],
       "cwd": "${workspaceFolder}",
       "outFiles": ["${workspaceFolder}/.esbuild/.build/src/**/*.js.map"],
       "sourceMaps": true
