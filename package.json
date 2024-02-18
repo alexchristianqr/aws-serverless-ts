@@ -8,7 +8,7 @@
   "repository": {
     "url": "https://github.com/alexchristianqr/aws-serverless-ts"
   },
-  "type": "module",
+  "type": "commonjs",
   "private": true,
   "version": "1.0.0",
   "scripts": {
