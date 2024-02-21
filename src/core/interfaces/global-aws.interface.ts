@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent, APIGatewayProxyEventV2WithRequestContext, Context, APIGatewayProxyCallback, Handler, APIGatewayProxyHandler } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyEventV2WithRequestContext, Context, APIGatewayProxyCallback, Handler, APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
 import { LambdaClient, InvokeCommandInput, InvokeAsyncCommandInput, InvokeCommand, LogType, InvokeCommandOutput } from "@aws-sdk/client-lambda";
 
 /* Custom Interfaces (CI_) */
@@ -11,6 +11,7 @@ export declare interface CI_InvokeCommandInput extends InvokeCommandInput {}
 export declare interface CI_InvokeAsyncCommandInput extends InvokeAsyncCommandInput {}
 export declare interface CI_InvokeCommandOutput extends InvokeCommandOutput {}
 export declare interface CI_APIGatewayProxyHandler extends APIGatewayProxyHandler {}
+export declare interface CI_APIGatewayProxyResult extends APIGatewayProxyResult {}
 
 /* Custom Clases (CC_) */
 export class CC_LambdaClient extends LambdaClient {}
