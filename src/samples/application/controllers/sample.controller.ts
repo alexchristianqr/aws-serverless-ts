@@ -1,4 +1,4 @@
-import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context, IRoutes } from "../../../core";
+import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context, IRoutes } from "../../../@core";
 import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts";
 import { Model } from "../../domain/entities/sample.entity.ts";
 import { SampleUsecase } from "../use-cases/sample.usecase.ts";

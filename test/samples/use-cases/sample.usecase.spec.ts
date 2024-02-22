@@ -1,7 +1,7 @@
 import { SampleUsecase } from "../../../src/samples/application/use-cases/sample.usecase";
 import { SampleLocalRepository } from "../../../src/samples/infrastructure/database/repositories/sample-local.repository";
 import { CreateSampleDto, ICreateSampleDto } from "../../../src/samples/application/dtos/create-sample.dto";
-import { CI_InvokeCommandInput, CV_LogType, LambdafunctionAdapterService } from "../../../src/core";
+import { CI_InvokeCommandInput, CV_LogType, LambdafunctionAdapterService } from "../../../src/@core";
 
 describe("Sample use case", () => {
   let repository: SampleLocalRepository;

@@ -1,4 +1,4 @@
-import { CI_APIGatewayProxyEvent, CI_APIGatewayProxyResult, CI_Context, middy } from "../core";
+import { CI_APIGatewayProxyEvent, CI_APIGatewayProxyResult, CI_Context, middy } from "../@core";
 import { SampleController } from "./application/controllers/sample.controller.ts";
 import { routesMiddleware } from "./application/middlewares/routes.middleware.ts";
 

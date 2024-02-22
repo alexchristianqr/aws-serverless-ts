@@ -1,4 +1,4 @@
-import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context, IRoutes } from "../../../core";
+import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context, IRoutes } from "../../../@core";
 import { UserLocalRepository } from "../../infrastructure/database/repositories/user-local.repository.ts";
 import { UserUsecase } from "../use-cases/user.usecase.ts";
 import { CreateUserDto } from "../dtos/create-user.dto.ts";
