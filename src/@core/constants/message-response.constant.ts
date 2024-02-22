@@ -1,4 +1,4 @@
-import { MessageResponseInterface } from "../interfaces/message-response.interface.ts";
+import { MessageResponseInterface } from "../interfaces";
 
 export const MESSAGE_RESPONSE_GENERAL: MessageResponseInterface = {
   statusCode: 500,
