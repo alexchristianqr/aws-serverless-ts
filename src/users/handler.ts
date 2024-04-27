@@ -1,7 +1,10 @@
-import { UserController } from "./application/controllers/user.controller.ts";
-import { CI_APIGatewayProxyEvent, CI_APIGatewayProxyHandler, CI_Context } from "../@core";
+import { CI_APIGatewayProxyEvent as Event, CI_APIGatewayProxyResult as Result, CI_Context as Context } from "../@common";
+import { RouterController } from "./application/controllers/router.controller.ts";
+import { middy } from "../@common/libs/middy.lib.ts";
 
-export async function users(event: CI_APIGatewayProxyEvent, context: CI_Context): Promise<CI_APIGatewayProxyHandler> {
-  const controller = new UserController(event, context);
-  return controller.selectResource();
+async function lambdaHandler(event: Event, context: Context): Promise<Result> {
+  const router = new RouterController();
+  return router.selectResource(event, context);
 }
+
+export const users = middy<Event, Result>().use([]).handler(lambdaHandler);

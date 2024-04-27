@@ -1,51 +1,18 @@
-import { CoreService, HttpStatusCodes, CI_APIGatewayProxyEvent, CI_Context, IRoutes } from "../../../@core";
+import { HttpStatusCodes, proxyEventMiddleware } from "../../../@common";
 import { UserLocalRepository } from "../../infrastructure/database/repositories/user-local.repository.ts";
 import { UserUsecase } from "../use-cases/user.usecase.ts";
-import { CreateUserDto } from "../dtos/create-user.dto.ts";
-import { UpdateUserDto } from "../dtos/update-user.dto.ts";
-import { Model } from "../../domain/entities/user.entity.ts";
+import { BaseController } from "../../../@common/controllers/base.controller.ts";
 
-export class UserController extends CoreService<Model> {
+export class UserController extends BaseController {
   private readonly sampleUsecase: UserUsecase = new UserUsecase(new UserLocalRepository());
   private result: any;
 
-  constructor(event: CI_APIGatewayProxyEvent, context: CI_Context) {
-    console.log("[UserController.constructor]");
-    super(event, context);
-  }
-
-  selectResource() {
-    console.log("[UserController.selectResource]");
-
-    const routes: IRoutes = {
-      GET: [
-        { path: "/users", callback: () => this.getUsers() },
-        { path: "/users/{id}", callback: () => this.getUserById(this.params.id) }
-      ],
-      POST: [{ path: "/users", callback: () => this.createUser(this.body.payload) }],
-      PUT: [{ path: "/users/{id}", callback: () => this.updateUser(this.params.id, this.body.payload) }],
-      DELETE: [{ path: "/users/{id}", callback: () => this.deleteUser(this.params.id) }]
-    };
-
-    const method: string | undefined | null = this.event?.httpMethod?.toUpperCase();
-    if (!method) {
-      throw new Error(`Método no válido: ${method}`);
-    }
-    const routesArray = routes[method] || [];
-
-    for (const route of routesArray) {
-      if (!this.resourceIsValid(route.path)) continue;
-      return route.callback();
-    }
-
-    return this.response.error.apiResponse({ message: "Recurso no encontrado" });
-  }
-
-  async createUser(data: CreateUserDto) {
-    console.log("[UserController.create]", { data });
+  async createUser(event: any) {
+    console.log("[UserController.create]");
 
     try {
-      this.result = await this.sampleUsecase.createUser(data);
+      const { payload } = await proxyEventMiddleware(event, "body");
+      this.result = await this.sampleUsecase.createUser(payload);
       return this.response.send.apiResponse({
         message: "Sample created",
         result: this.result,
@@ -56,10 +23,11 @@ export class UserController extends CoreService<Model> {
     }
   }
 
-  async deleteUser(id: number) {
-    console.log("[UserController.delete]", { id });
+  async deleteUser(event: any) {
+    console.log("[UserController.delete]");
 
     try {
+      const { id } = await proxyEventMiddleware(event, "params");
       this.result = await this.sampleUsecase.deleteUser(id);
       return this.response.send.apiResponse({ message: "Delete user", result: this.result });
     } catch (error) {
@@ -67,10 +35,11 @@ export class UserController extends CoreService<Model> {
     }
   }
 
-  async getUserById(id: number) {
-    console.log("[UserController.getUserById]", { id });
+  async getUserById(event: any) {
+    console.log("[UserController.getUserById]");
 
     try {
+      const { id } = await proxyEventMiddleware(event, "params");
       this.result = await this.sampleUsecase.getUserById(id);
       return this.response.send.apiResponse({ message: "Single user", result: this.result });
     } catch (error) {
@@ -78,10 +47,11 @@ export class UserController extends CoreService<Model> {
     }
   }
 
-  async getUsers() {
+  async getUsers(event: any) {
     console.log("[UserController.getUsers]");
 
     try {
+      const {} = await proxyEventMiddleware(event, "query");
       this.result = await this.sampleUsecase.getUsers();
       return this.response.send.apiResponse({ message: "All users", result: this.result });
     } catch (error) {
@@ -89,11 +59,12 @@ export class UserController extends CoreService<Model> {
     }
   }
 
-  async updateUser(id: number, data: UpdateUserDto) {
-    console.log("[UserController.updateUser]", { id, data });
+  async updateUser(event: any) {
+    console.log("[UserController.updateUser]");
 
     try {
-      await this.sampleUsecase.updateUser(id, data);
+      const { id, payload } = await proxyEventMiddleware(event, "body|params");
+      await this.sampleUsecase.updateUser(id, payload);
       return this.response.send.apiResponse({ message: "Update user", result: this.result });
     } catch (error) {
       return this.response.error.apiResponse({ error: error });
