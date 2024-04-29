@@ -8,16 +8,14 @@ export class CreateSampleDto extends ICreateSampleDto {
     this.validate(data);
 
     this.id = data?.id;
-    this.name = data?.name;
-    this.lastname = data?.lastname;
-    this.age = data?.age;
+    this.title = data?.title;
+    this.description = data?.description;
   }
 
   validate(data?: ICreateSampleDto) {
     if (!data) throw new Error("[data] no existe");
     if (!data?.id) throw new Error("[id] es necesario");
-    if (!data?.name) throw new Error("[nombre] es necesario");
-    if (!data?.lastname) throw new Error("[apellido] es necesario");
-    if (!data?.age) throw new Error("[edad] es necesario");
+    if (!data?.title) throw new Error("[titulo] es necesario");
+    if (!data?.description) throw new Error("[descripcion] es necesario");
   }
 }

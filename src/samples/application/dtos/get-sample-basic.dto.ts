@@ -6,7 +6,7 @@ export class GetSampleBasicDto extends IGetSampleBasicDto {
   constructor(data: IGetSampleBasicDto) {
     super();
 
-    this.name = data.name;
-    this.lastname = data.lastname;
+    this.title = data.title;
+    this.description = data.description;
   }
 }

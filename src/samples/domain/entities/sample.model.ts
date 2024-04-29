@@ -4,6 +4,7 @@ export class SampleModel extends SampleEntity {
   constructor(sample?: SampleModel) {
     super();
     this.id = sample?.id;
-    this.name = sample?.name;
+    this.title = sample?.title;
+    this.description = sample?.description;
   }
 }

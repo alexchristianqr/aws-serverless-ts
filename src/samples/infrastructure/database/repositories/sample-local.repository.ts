@@ -31,7 +31,8 @@ export class SampleLocalRepository implements SampleOutputRepository<Model> {
     const sample: Model | undefined = this.items.find((item) => item.id == id);
     if (!sample) return false;
     sample.id = data.id;
-    sample.name = data.name;
+    sample.title = data.title;
+    sample.description = data.description;
     return true;
   }
 
