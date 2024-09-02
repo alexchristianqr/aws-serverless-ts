@@ -30,3 +30,4 @@ dist-ssr
 package-lock.json
 .env.dev
 .env.prod
+.env
