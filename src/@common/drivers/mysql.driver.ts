@@ -186,7 +186,6 @@ export class MysqlDriver {
     try {
       let queryResult;
 
-      console.log("holiiiiiiii", statement);
       if (typeof statement === "string") {
         const query = await this.bindQueryParams(connection, statement as string, bindParams);
         queryResult = await this.execute(connection, query, config);
