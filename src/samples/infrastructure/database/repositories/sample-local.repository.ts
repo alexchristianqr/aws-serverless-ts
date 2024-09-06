@@ -36,10 +36,16 @@ export class SampleLocalRepository implements SampleOutputRepository<Model> {
     return true;
   }
 
-  async updateField(id: number, key: string, value: any): Promise<boolean> {
+  async updateField(id: number, request: any): Promise<boolean> {
+    const { payload } = request;
+
+    const [field] = Object.keys(payload);
+    const value = payload[field];
+
     const sample: any = this.items.find((item) => item.id == id);
     if (!sample) return false;
-    sample[key] = value;
+    sample[field] = value;
+
     return true;
   }
 }

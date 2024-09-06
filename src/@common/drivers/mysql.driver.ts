@@ -222,8 +222,12 @@ export class MysqlDriver {
           console.log("Resultado 01 SQL: " + JSON.stringify(result));
           return result;
         } else {
-          console.log("Resultado 02 SQL: " + JSON.stringify(data));
-          return data;
+          const result: object = {
+            getAll: () => data,
+            getFirst: () => data[0]
+          };
+          console.log("Resultado 02 SQL: " + JSON.stringify(result));
+          return result;
         }
       }
 

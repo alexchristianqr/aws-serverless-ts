@@ -2,6 +2,7 @@ import { HttpStatusCodes, proxyEventMiddleware } from "../../../@common";
 // import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts";
 import { SampleUsecase } from "../use-cases/sample.usecase.ts";
 import { BaseController } from "../../../@common/controllers/base.controller.ts";
+// import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts";
 import { SampleMysqlRepository } from "../../infrastructure/database/repositories/sample-mysql.repository.ts";
 
 export class SampleController extends BaseController {

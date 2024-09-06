@@ -27,8 +27,8 @@ export class SampleMysqlRepository implements SampleOutputRepository<Model> {
     const statement = `SELECT * FROM ${this.tableMain} WHERE id = :id`;
 
     const connection = await db.getConnection();
-    const { getFirst } = await db.executeSQLStatement({ connection, statement, bindParams: { id } });
-    return getFirst() as Function;
+    const { getFirst = Function } = await db.executeSQLStatement({ connection, statement, bindParams: { id } });
+    return getFirst();
   }
 
   async getAll(request: any, isPageable: boolean = true): Promise<any> {
@@ -39,7 +39,8 @@ export class SampleMysqlRepository implements SampleOutputRepository<Model> {
       const { limit, page, event } = request;
       return db.executeQueryPageable({ connection, statement, pagination: { limit, page, event } });
     } else {
-      return db.executeSQLStatement({ connection, statement });
+      const { getAll = Function } = await db.executeSQLStatement({ connection, statement });
+      return getAll();
     }
   }
 

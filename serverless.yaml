@@ -1,4 +1,4 @@
-service: "AWSTEMPLATETS"
+service: "AWSTEMPLATE"
 
 plugins:
   - serverless-esbuild
@@ -9,11 +9,12 @@ frameworkVersion: "3"
 useDotenv: true
 
 provider:
+  # General
   name: aws
   runtime: ${env:AWS_RUNTIME}
   stage: ${sls:stage}
   region: ${env:AWS_REGION}
-  timeout: ${env:SLS_TIMEOUT} # Por defecto es 3 segundos, establecer a 30 para un correcto debug
+  timeout: ${env:SLS_TIMEOUT} # Por defecto es 30 segundos, establecer a 300 seg para un correcto debug
 
   # AWS Bucket S3
   deploymentBucket:
@@ -43,14 +44,13 @@ custom:
     minify: false
     sourcemap: true
 
-# layers:
-#   base:
-#     name: "app-dependencies"
-#     compatibleArchitectures:
-#       - "nodejs18.x"
-#     package:
-#       artifact: "app.zip"
+#layers:
+#  base:
+#    name: "app-dependencies"
+#    compatibleArchitectures:
+#      - "nodejs18.x"
+#    package:
+#      artifact: "app.zip"
 
 functions:
   - ${file(src/samples/application/serverless/events.yaml)}
-#  - ${file(src/users/application/serverless/events.yaml)}
