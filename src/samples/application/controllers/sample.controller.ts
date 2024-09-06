@@ -1,10 +1,11 @@
 import { HttpStatusCodes, proxyEventMiddleware } from "../../../@common";
-import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts";
+// import { SampleLocalRepository } from "../../infrastructure/database/repositories/sample-local.repository.ts";
 import { SampleUsecase } from "../use-cases/sample.usecase.ts";
 import { BaseController } from "../../../@common/controllers/base.controller.ts";
+import { SampleMysqlRepository } from "../../infrastructure/database/repositories/sample-mysql.repository.ts";
 
 export class SampleController extends BaseController {
-  private readonly sampleUsecase: SampleUsecase = new SampleUsecase(new SampleLocalRepository());
+  private readonly sampleUsecase: SampleUsecase = new SampleUsecase(new SampleMysqlRepository());
   private result: any;
 
   async createSample(event: any) {
@@ -29,7 +30,7 @@ export class SampleController extends BaseController {
     try {
       const { id } = await proxyEventMiddleware(event, "params");
       this.result = await this.sampleUsecase.deleteSample(id);
-      return this.response.send.apiResponse({ message: "Delete sample", result: this.result });
+      return this.response.send.apiResponse({ message: "Sample deleted", result: this.result });
     } catch (error) {
       return this.response.error.apiResponse({ error: error });
     }
@@ -51,8 +52,8 @@ export class SampleController extends BaseController {
     console.log("[SampleController.getSamples]");
 
     try {
-      const {} = await proxyEventMiddleware(event, "query");
-      this.result = await this.sampleUsecase.getSamples();
+      const request = await proxyEventMiddleware(event, "query");
+      this.result = await this.sampleUsecase.getSamples(request);
       return this.response.send.apiResponse({ message: "All samples", result: this.result });
     } catch (error) {
       return this.response.error.apiResponse({ error: error });
@@ -64,8 +65,21 @@ export class SampleController extends BaseController {
 
     try {
       const { id, payload } = await proxyEventMiddleware(event, "body|params");
-      await this.sampleUsecase.updateSample(id, payload);
-      return this.response.send.apiResponse({ message: "Update sample", result: this.result });
+      this.result = await this.sampleUsecase.updateSample(id, payload);
+      return this.response.send.apiResponse({ message: "Sample updated", result: this.result });
+    } catch (error) {
+      return this.response.error.apiResponse({ error: error });
+    }
+  }
+
+  async updateFieldSample(event: any) {
+    console.log("[SampleController.updateFieldSample]");
+
+    try {
+      const request = await proxyEventMiddleware(event, "query|body|params");
+      const { id } = request;
+      this.result = await this.sampleUsecase.updateFieldSample(id, request);
+      return this.response.send.apiResponse({ message: "Sample patched", result: this.result });
     } catch (error) {
       return this.response.error.apiResponse({ error: error });
     }

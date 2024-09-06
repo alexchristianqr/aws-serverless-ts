@@ -11,6 +11,7 @@ export class RouterController extends BaseController {
       ],
       POST: [{ path: "/samples", callback: () => controller.createSample(event) }],
       PUT: [{ path: "/samples/{id}", callback: () => controller.updateSample(event) }],
+      PATCH: [{ path: "/samples/{id}", callback: () => controller.updateFieldSample(event) }],
       DELETE: [{ path: "/samples/{id}", callback: () => controller.deleteSample(event) }]
     };
   }

@@ -14,7 +14,6 @@ export class CreateSampleDto extends ICreateSampleDto {
 
   validate(data?: ICreateSampleDto) {
     if (!data) throw new Error("[data] no existe");
-    if (!data?.id) throw new Error("[id] es necesario");
     if (!data?.title) throw new Error("[titulo] es necesario");
     if (!data?.description) throw new Error("[descripcion] es necesario");
   }
