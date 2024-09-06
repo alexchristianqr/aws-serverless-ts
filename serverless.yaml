@@ -53,4 +53,4 @@ custom:
 
 functions:
   - ${file(src/samples/application/serverless/events.yaml)}
-  - ${file(src/users/application/serverless/events.yaml)}
+#  - ${file(src/users/application/serverless/events.yaml)}
