@@ -13,7 +13,7 @@ interface BodyPayload<T> {
   payload: T | any;
 }
 
-type TypeStructureRequest = "query" | "body" | "params" | "query|body|params" | "body|params" | "event" | "query|body";
+type TypeStructureRequest = "query" | "body" | "params" | "query|body|params" | "body|params" | "query|body" | "query|params";
 
 export async function proxyEventMiddleware<T>(event: CI_APIGatewayProxyEvent, type: TypeStructureRequest) {
   let bodyPayload: BodyPayload<T> | any;
@@ -37,6 +37,8 @@ export async function proxyEventMiddleware<T>(event: CI_APIGatewayProxyEvent, ty
       return { ...bodyPayload, ...paramsPayload, event };
     case "query|body":
       return { ...queryStringParameters, ...bodyPayload, event };
+    case "query|params":
+      return { ...queryStringParameters, ...paramsPayload, event };
     default:
       throw new Error(`Tipo debe ser: query / body / params / query|body|params / body|params`);
   }
