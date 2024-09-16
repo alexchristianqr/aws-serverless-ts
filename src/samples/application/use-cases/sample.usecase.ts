@@ -23,11 +23,11 @@ export class SampleUsecase implements SampleInputUsecase {
     return this.repository.getById(id);
   }
 
-  async getSamples(request: any): Promise<any> {
-    if (request?.limit && request?.page) {
-      return this.repository.getAll(request, true);
+  async getSamples(data: any): Promise<any> {
+    if (data?.limit && data?.page) {
+      return this.repository.getAll(data, true);
     } else {
-      return this.repository.getAll(request, false);
+      return this.repository.getAll(data, false);
     }
   }
 
@@ -36,7 +36,7 @@ export class SampleUsecase implements SampleInputUsecase {
     return this.repository.update(id, sample);
   }
 
-  updateFieldSample(id: number, request: any): Promise<boolean> {
-    return this.repository.updateField(id, request);
+  updateFieldSample(id: number, data: any): Promise<boolean> {
+    return this.repository.updateField(id, data);
   }
 }

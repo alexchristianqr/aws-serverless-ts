@@ -15,7 +15,7 @@ interface ResultPagination {
 }
 
 interface Body {
-  statusCode?: HttpStatusCodes;
+  status?: HttpStatusCodes;
   success?: boolean;
   result?: ResultPagination | any;
   message: string | null;
@@ -26,23 +26,23 @@ interface Payload {
 }
 
 interface Response {
-  statusCode: HttpStatusCodes;
+  status: HttpStatusCodes;
   body: string;
 }
 
 export class SendResponseService {
   private payload: Payload = {
-    body: { message: null, success: true, result: null, statusCode: HttpStatusCodes.OK }
+    body: { message: null, success: true, result: null, status: HttpStatusCodes.OK }
   };
-  private response: Response = { statusCode: HttpStatusCodes.OK, body: JSON.stringify(this.payload.body) };
+  private response: Response = { status: HttpStatusCodes.OK, body: JSON.stringify(this.payload.body) };
 
   async apiResponse(payload: Body): Promise<Response> {
-    this.payload.body.statusCode = payload?.statusCode || HttpStatusCodes.OK;
+    this.payload.body.status = payload?.status || HttpStatusCodes.OK;
     this.payload.body.success = payload?.success || true;
     this.payload.body.result = payload?.result || undefined;
     this.payload.body.message = payload.message;
 
-    this.response.statusCode = this.payload.body.statusCode;
+    this.response.status = this.payload.body.status;
     this.response.body = JSON.stringify(this.payload.body);
 
     return this.response;

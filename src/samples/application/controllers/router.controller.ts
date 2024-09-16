@@ -19,7 +19,6 @@ export class RouterController extends BaseController {
     console.log("[RouterController.selectResource]", JSON.stringify({ event, context }));
 
     const controller = new MyController();
-
     const routes: IRoutes = this.routesMap(event, controller);
 
     const method: string | undefined | null = event?.httpMethod?.toUpperCase();

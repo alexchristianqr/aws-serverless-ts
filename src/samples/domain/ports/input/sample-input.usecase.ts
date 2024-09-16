@@ -6,7 +6,7 @@ import { IGetSampleBasicDto } from "../../../application/dtos/get-sample-basic.d
 export abstract class SampleInputUsecase {
   abstract createSample(data: ICreateSampleDto): Promise<ICreateSampleDto>;
   abstract getSampleById(id: number): Promise<SampleEntity | null>;
-  abstract getSamples(request?: any): Promise<Array<IGetSampleBasicDto>>;
+  abstract getSamples(data?: any): Promise<Array<IGetSampleBasicDto>>;
   abstract updateSample(id: number, data: IUpdateSampleDto): Promise<boolean>;
   abstract deleteSample(id: number): Promise<boolean>;
 }

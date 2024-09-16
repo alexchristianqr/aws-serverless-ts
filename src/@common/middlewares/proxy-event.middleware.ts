@@ -25,6 +25,8 @@ export async function proxyEventMiddleware<T>(event: CI_APIGatewayProxyEvent, ty
   if (pathParameters) paramsPayload = pathParameters;
 
   switch (type) {
+    case "query":
+      return { ...queryStringParameters, event };
     case "body":
       return { ...bodyPayload, event };
     case "params":
@@ -35,8 +37,6 @@ export async function proxyEventMiddleware<T>(event: CI_APIGatewayProxyEvent, ty
       return { ...bodyPayload, ...paramsPayload, event };
     case "query|body":
       return { ...queryStringParameters, ...bodyPayload, event };
-    case "query":
-      return { ...queryStringParameters, event };
     default:
       throw new Error(`Tipo debe ser: query / body / params / query|body|params / body|params`);
   }

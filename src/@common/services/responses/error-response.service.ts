@@ -1,7 +1,7 @@
 import { HttpStatusCodes } from "../../enums";
 
 interface Body {
-  statusCode?: HttpStatusCodes;
+  status?: HttpStatusCodes;
   success?: boolean;
   message?: string;
   detail?: any;
@@ -13,23 +13,23 @@ interface Payload {
 }
 
 interface Response {
-  statusCode: HttpStatusCodes;
+  status: HttpStatusCodes;
   body: string;
 }
 
 export class ErrorResponseService {
   private payload: Payload = {
-    body: { message: "Internal server error", success: false, detail: null, statusCode: HttpStatusCodes.INTERNAL_SERVER }
+    body: { message: "Internal server error", success: false, detail: null, status: HttpStatusCodes.INTERNAL_SERVER }
   };
-  private response: Response = { statusCode: HttpStatusCodes.INTERNAL_SERVER, body: JSON.stringify(this.payload.body) };
+  private response: Response = { status: HttpStatusCodes.INTERNAL_SERVER, body: JSON.stringify(this.payload.body) };
 
   async apiResponse(payload: Body): Promise<Response> {
-    this.payload.body.statusCode = payload?.statusCode || HttpStatusCodes.INTERNAL_SERVER;
+    this.payload.body.status = payload?.status || HttpStatusCodes.INTERNAL_SERVER;
     this.payload.body.success = payload?.success || false;
     this.payload.body.message = payload?.error?.message || payload?.message;
     this.payload.body.detail = payload?.error?.stack;
 
-    this.response.statusCode = this.payload.body.statusCode;
+    this.response.status = this.payload.body.status;
     this.response.body = JSON.stringify(this.payload.body);
 
     return this.response;
