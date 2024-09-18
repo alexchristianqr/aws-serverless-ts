@@ -307,15 +307,11 @@ export class MysqlDriver {
         data: resultContent.data,
         pagination: {
           total,
-          /*
-            limit,
-            page,
-          */
-          per_page: limit,
-          current_page: page,
-          last_page: lastPage,
-          next_page_url: nextPage ? `${baseUrl}?limit=${limit}&page=${nextPage}` : null,
-          prev_page_url: prevPage ? `${baseUrl}?limit=${limit}&page=${prevPage}` : null,
+          perPage: limit,
+          currentPage: page,
+          lastPage: lastPage,
+          nextPageUrl: nextPage ? `${baseUrl}?limit=${limit}&page=${nextPage}` : null,
+          prevPageUrl: prevPage ? `${baseUrl}?limit=${limit}&page=${prevPage}` : null,
           from,
           to
         }
