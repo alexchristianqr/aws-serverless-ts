@@ -110,12 +110,10 @@ export class MysqlDriver {
 
     try {
       let bindSql = `${statement}`;
-
       Object.keys(bindParams).forEach((field) => {
         const paramSql = connection.escape(bindParams[field]);
         bindSql = bindSql.replace(new RegExp(`(:${field})\\b`, "g"), paramSql);
       });
-
       return bindSql;
     } catch (error) {
       throw new Error(String(error));
@@ -153,7 +151,7 @@ export class MysqlDriver {
     console.log("[MySQLService.execute]");
 
     try {
-      const queryPromise = new Promise<any>((resolve, reject) => {
+      return new Promise<any>((resolve, reject) => {
         console.debug("Script SQL: " + statement);
 
         connection.query({ sql: statement, timeout: timeout * 1000 }, (error, data) => {
@@ -161,8 +159,6 @@ export class MysqlDriver {
           return resolve(data);
         });
       });
-
-      return await queryPromise;
     } catch (error: any) {
       throw new Exception({
         code: error.code === "PROTOCOL_SEQUENCE_TIMEOUT" ? APP_EXCEPTION.DB_TIMEOUT_ERROR.code : APP_EXCEPTION.DB_ERROR.code,
