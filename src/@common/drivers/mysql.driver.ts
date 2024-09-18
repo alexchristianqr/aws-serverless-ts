@@ -25,6 +25,7 @@ interface Pagination {
   from?: number; // Primer elemento de la página actual
   to?: number; // Último elemento de la página actual
 }
+
 interface ResultPagination {
   data: any;
   pagination: Pagination;
@@ -44,6 +45,7 @@ interface SQLStatement {
   manualMapping?: any[];
   config?: { timeout: number; isPageable: boolean };
 }
+
 interface QueryPageable {
   connection: Connection;
   projection?: string;
@@ -153,10 +155,9 @@ export class MysqlDriver {
     try {
       const queryPromise = new Promise<any>((resolve, reject) => {
         console.debug("Script SQL: " + statement);
+
         connection.query({ sql: statement, timeout: timeout * 1000 }, (error, data) => {
-          if (error) {
-            return reject(error);
-          }
+          if (error) return reject(error);
           return resolve(data);
         });
       });
@@ -193,46 +194,49 @@ export class MysqlDriver {
         queryResult = await this.execute(connection, statement as any, config);
       }
 
-      if (Array.isArray(queryResult)) {
-        const data = queryResult.map((row: any) => {
-          if (manualMapping) {
-            Object.entries(row).forEach(([key, value]) => {
-              const mapper = manualMapping.find((obj) => {
-                return key.toUpperCase() === obj.source.toUpperCase();
-              });
-              if (mapper) {
-                row[mapper.target] = value;
-                delete row[mapper.source];
-                return;
-              }
-              row[key] = value;
-            });
-          }
-          if (target) {
-            return Mapper.sqlResultToObject(row, target);
-          }
-          return Mapper.sqlResultToObject(row);
-        });
-
-        if (config.isPageable) {
-          const result = {
-            data,
-            getFirst: () => result.data[0]
-          };
-          console.log("Resultado 01 SQL: " + JSON.stringify(result));
-          return result;
-        } else {
-          const result: object = {
-            getAll: () => data,
-            getFirst: () => data[0]
-          };
-          console.log("Resultado 02 SQL: " + JSON.stringify(result));
-          return result;
-        }
+      const isArray = Array.isArray(queryResult);
+      if (!isArray) {
+        console.log("Resultado 01 SQL: " + JSON.stringify(queryResult));
+        return queryResult;
       }
 
-      console.log("Resultado 03 SQL: " + JSON.stringify(queryResult));
-      return queryResult;
+      const data = queryResult.map((row: any) => {
+        if (manualMapping) {
+          Object.entries(row).forEach(([key, value]) => {
+            const mapper = manualMapping.find((obj) => {
+              return key.toUpperCase() === obj.source.toUpperCase();
+            });
+            if (mapper) {
+              row[mapper.target] = value;
+              delete row[mapper.source];
+              return;
+            }
+            row[key] = value;
+          });
+        }
+        if (target) {
+          return Mapper.sqlResultToObject(row, target);
+        }
+        return Mapper.sqlResultToObject(row);
+      });
+
+      let result;
+      if (config.isPageable) {
+        result = {
+          data,
+          getFirst: () => data[0]
+        };
+        console.log("Resultado 02 SQL: " + JSON.stringify(data));
+        return result;
+      } else {
+        result = {
+          getAll: () => data,
+          getFirst: () => data[0]
+        };
+        console.log("Resultado 03 SQL: " + JSON.stringify(data));
+      }
+
+      return result;
     } catch (error) {
       throw error;
     }
@@ -272,7 +276,8 @@ export class MysqlDriver {
       const offset = page > 1 ? (page - 1) * limit : 0;
 
       const query = `${statement || projection + " " + selection} LIMIT ${limit} OFFSET ${offset}`;
-      const queryCount = `SELECT count(1) AS total FROM (${statement || `SELECT 1 ${selection}`}) q`;
+      const queryCount = `SELECT count(1) AS total
+                          FROM (${statement || `SELECT 1 ${selection}`}) q`;
 
       const [resultCount, resultContent] = await Promise.all([
         this.executeSQLStatement({
