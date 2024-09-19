@@ -1,10 +1,7 @@
 import { MysqlDriver as db } from "../../../../@common/drivers/mysql.driver.ts";
 import { SampleOutputRepository } from "../../../domain/ports/output/sample-output.repository.ts";
-import { SampleEntity } from "../../../domain/entities/sample.entity.ts";
 
-interface Model extends SampleEntity {}
-
-export class SampleMysqlRepository implements SampleOutputRepository<Model> {
+export class SampleMysqlRepository implements SampleOutputRepository {
   private tableMain = `samples`;
 
   constructor() {}

@@ -1,7 +1,7 @@
-export abstract class GenericProviderRepository<T> {
-  abstract create?(data: T): Promise<T | undefined>;
-  abstract getAll(request?: any, isPageable?: boolean): Promise<Array<T>>;
-  abstract getById?(id: number): Promise<T | null>;
-  abstract update?(id: number, data: T): Promise<boolean>;
-  abstract delete?(id: number): Promise<boolean>;
+export abstract class GenericProviderRepository {
+  abstract create(payload: any): Promise<Record<string, any> | null>;
+  abstract getAll(payload?: any, isPageable?: boolean): Promise<Array<any> | []>;
+  abstract getById(id: number): Promise<Record<string, any> | null>;
+  abstract update(id: number, payload: any): Promise<boolean>;
+  abstract delete(id: number): Promise<boolean>;
 }

@@ -3,12 +3,11 @@ import { SampleOutputRepository } from "../../domain/ports/output/sample-output.
 import { SampleEntity } from "../../domain/entities/sample.entity.ts";
 import { CreateSampleDto, ICreateSampleDto } from "../dtos/create-sample.dto.ts";
 import { IUpdateSampleDto, UpdateSampleDto } from "../dtos/update-sample.dto.ts";
-// import { GetSampleBasicDto, IGetSampleBasicDto } from "../dtos/get-sample-basic.dto.ts";
 
 interface Model extends SampleEntity {}
 
 export class SampleUsecase implements SampleInputUsecase {
-  constructor(private readonly repository: SampleOutputRepository<Model>) {}
+  constructor(private readonly repository: SampleOutputRepository) {}
 
   createSample(data: ICreateSampleDto): Promise<ICreateSampleDto> {
     const sample: ICreateSampleDto = new CreateSampleDto(data);
@@ -23,7 +22,7 @@ export class SampleUsecase implements SampleInputUsecase {
     return this.repository.getById(id);
   }
 
-  async getSamples(data: any): Promise<any> {
+  getSamples(data: any): Promise<any> {
     if (data?.limit && data?.page) {
       return this.repository.getAll(data, true);
     } else {

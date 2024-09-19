@@ -1,4 +1,4 @@
-import { CI_APIGatewayProxyEvent, CI_Context } from "../interfaces";
+import { CI_APIGatewayProxyEvent } from "../interfaces";
 
 interface Route {
   path: string;
@@ -41,29 +41,5 @@ export async function proxyEventMiddleware<T>(event: CI_APIGatewayProxyEvent, ty
       return { ...queryStringParameters, ...paramsPayload, event };
     default:
       throw new Error(`Tipo debe ser: query / body / params / query|body|params / body|params`);
-  }
-}
-
-export class ProxyEventMiddleware<T> {
-  protected body: BodyPayload<T> | any;
-  protected params: T | any;
-  protected query: T | any;
-  protected event: CI_APIGatewayProxyEvent;
-  protected context?: CI_Context;
-
-  constructor(event: CI_APIGatewayProxyEvent, context?: CI_Context) {
-    console.log("[ProxyEventMiddleware.constructor]");
-
-    this.event = event;
-    this.context = context;
-    const { body, pathParameters, queryStringParameters } = event;
-
-    if (body) this.body = JSON.parse(body);
-    if (pathParameters) this.params = pathParameters;
-    if (queryStringParameters) this.query = queryStringParameters;
-  }
-
-  resourceIsValid(path: string) {
-    return this.event.resource === path;
   }
 }

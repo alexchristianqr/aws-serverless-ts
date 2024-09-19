@@ -19,6 +19,7 @@ interface Body {
   success?: boolean;
   result?: ResultPagination | any;
   message: string | null;
+  timestamp?: Date;
 }
 
 interface Payload {
@@ -31,20 +32,22 @@ interface Response {
 }
 
 export class SendResponseService {
-  private payload: Payload = {
-    body: { message: null, success: true, result: null, status: HttpStatusCodes.OK }
-  };
+  private payload: Payload = { body: { message: null } };
   private response: Response = { status: HttpStatusCodes.OK, body: JSON.stringify(this.payload.body) };
 
   async apiResponse(payload: Body): Promise<Response> {
-    this.payload.body.status = payload?.status || HttpStatusCodes.OK;
-    this.payload.body.success = payload?.success || true;
-    this.payload.body.result = payload?.result || undefined;
-    this.payload.body.message = payload.message;
+    // Respuesta API
+    this.payload.body.status = payload?.status ?? HttpStatusCodes.OK;
+    this.payload.body.success = payload?.success ?? true;
+    this.payload.body.result = payload?.result ?? undefined;
+    this.payload.body.message = payload?.message;
+    this.payload.body.timestamp = new Date();
 
+    // Respuesta lambda function
     this.response.status = this.payload.body.status;
     this.response.body = JSON.stringify(this.payload.body);
 
+    // Return
     return this.response;
   }
 }

@@ -5,7 +5,8 @@ interface Body {
   success?: boolean;
   message?: string;
   detail?: any;
-  error?: Error;
+  error: Error | any;
+  timestamp?: Date;
 }
 
 interface Payload {
@@ -19,19 +20,23 @@ interface Response {
 
 export class ErrorResponseService {
   private payload: Payload = {
-    body: { message: "Internal server error", success: false, detail: null, status: HttpStatusCodes.INTERNAL_SERVER }
+    body: { message: "Internal server error" }
   };
   private response: Response = { status: HttpStatusCodes.INTERNAL_SERVER, body: JSON.stringify(this.payload.body) };
 
   async apiResponse(payload: Body): Promise<Response> {
-    this.payload.body.status = payload?.status || HttpStatusCodes.INTERNAL_SERVER;
-    this.payload.body.success = payload?.success || false;
-    this.payload.body.message = payload?.error?.message || payload?.message;
+    // Respuesta API
+    this.payload.body.status = payload?.status ?? HttpStatusCodes.INTERNAL_SERVER;
+    this.payload.body.success = payload?.success ?? false;
+    this.payload.body.message = payload?.error?.message ?? payload.message;
     this.payload.body.detail = payload?.error?.stack;
+    this.payload.body.timestamp = new Date();
 
+    // Respuesta lambda function
     this.response.status = this.payload.body.status;
     this.response.body = JSON.stringify(this.payload.body);
 
+    // Return
     return this.response;
   }
 }
