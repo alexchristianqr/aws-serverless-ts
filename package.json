@@ -19,6 +19,7 @@
     "debug": "node --inspect .\\node_modules\\serverless\\bin\\serverless offline --stage dev --noPrependStageInUrl --ignoreJWTSignature --noAuth"
   },
   "dependencies": {
+    "amazon-cognito-identity-js": "^6.2.0",
     "@aws-sdk/client-dynamodb": "^3.438.0",
     "@aws-sdk/client-eventbridge": "^3.654.0",
     "@aws-sdk/client-lambda": "^3.438.0",
