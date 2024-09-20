@@ -1,12 +1,21 @@
 import { CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserAttribute, CognitoUserSession, CognitoRefreshToken } from "amazon-cognito-identity-js";
 
+interface ConfigDefault {
+  userPoolId?: string;
+  clientId?: string;
+}
+const configDefault: ConfigDefault = {
+  userPoolId: "us-east-1_XXXXXXXXX",
+  clientId: "XXXXXXXXXXXXX"
+};
+
 export class CognitoService {
   private readonly userPool: CognitoUserPool;
 
-  constructor(private userPoolId: string, private clientId: string) {
+  constructor({ userPoolId, clientId }: ConfigDefault) {
     this.userPool = new CognitoUserPool({
-      UserPoolId: this.userPoolId,
-      ClientId: this.clientId
+      UserPoolId: userPoolId ?? configDefault.userPoolId,
+      ClientId: clientId ?? configDefault.clientId
     });
   }
 

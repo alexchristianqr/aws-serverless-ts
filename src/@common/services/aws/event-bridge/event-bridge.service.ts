@@ -1,10 +1,21 @@
 import { EventBridgeClient, PutEventsCommand } from "@aws-sdk/client-eventbridge";
 
-export class EventBridgeService {
-  private eventBridgeClient: EventBridgeClient;
+interface ConfigDefault {
+  region?: string;
+  eventBusName?: string;
+}
+const configDefault: ConfigDefault = {
+  region: "us-east-1",
+  eventBusName: "MyEventBus"
+};
 
-  constructor(private eventBusName: string) {
-    this.eventBridgeClient = new EventBridgeClient({ region: "us-east-1" }); // Cambia la región si es necesario
+export class EventBridgeService {
+  private readonly client: EventBridgeClient;
+  private readonly eventBusName: string;
+
+  constructor({ eventBusName, region }: ConfigDefault) {
+    this.client = new EventBridgeClient({ region: region ?? configDefault.region }); // Cambia la región si es necesario
+    this.eventBusName = eventBusName ?? configDefault.eventBusName;
   }
 
   // Enviar evento a EventBridge
@@ -22,7 +33,7 @@ export class EventBridgeService {
       };
 
       const command = new PutEventsCommand(params);
-      await this.eventBridgeClient.send(command);
+      await this.client.send(command);
       console.log("Evento enviado a EventBridge");
     } catch (error) {
       console.error("Error enviando evento a EventBridge:", error);

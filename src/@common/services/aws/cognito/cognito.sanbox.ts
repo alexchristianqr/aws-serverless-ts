@@ -1,7 +1,7 @@
 import { CognitoService } from "./cognito.service.ts";
 
 export async function CognitoSanbox() {
-  const service = new CognitoService("us-east-1_XXXXXXXXX", "XXXXXXXXXXXXX");
+  const service = new CognitoService({ userPoolId: "us-east-1_XXXXXXXXX", clientId: "XXXXXXXXXXXXX" });
 
   // Registro de un usuario
   const user = await service.registerUser("test@example.com", "Password123!", { name: "Test User" });

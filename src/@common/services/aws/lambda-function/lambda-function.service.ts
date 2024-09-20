@@ -1,10 +1,17 @@
 import AWS from "aws-sdk";
 
-export class LambdaFunctionService {
-  private lambda: AWS.Lambda;
+interface ConfigDefault {
+  region?: string;
+}
+const configDefault: ConfigDefault = {
+  region: "us-east-1"
+};
 
-  constructor(region: string) {
-    this.lambda = new AWS.Lambda({ region });
+export class LambdaFunctionService {
+  private readonly client: AWS.Lambda;
+
+  constructor({ region }: ConfigDefault) {
+    this.client = new AWS.Lambda({ region: region ?? configDefault.region });
   }
 
   // Invoca una función Lambda con los parámetros especificados
@@ -15,7 +22,7 @@ export class LambdaFunctionService {
     };
 
     try {
-      const response = await this.lambda.invoke(params).promise();
+      const response = await this.client.invoke(params).promise();
       return response;
     } catch (error) {
       throw new Error(`Error invoking Lambda function: ${error}`);
@@ -25,7 +32,7 @@ export class LambdaFunctionService {
   // Lista todas las funciones Lambda en la cuenta
   async listFunctions(): Promise<AWS.Lambda.FunctionList> {
     try {
-      const response = await this.lambda.listFunctions().promise();
+      const response = await this.client.listFunctions().promise();
       return response.Functions || [];
     } catch (error) {
       throw new Error(`Error listing Lambda functions: ${error}`);
@@ -39,7 +46,7 @@ export class LambdaFunctionService {
     };
 
     try {
-      const response = await this.lambda.getFunction(params).promise();
+      const response = await this.client.getFunction(params).promise();
       return response.Configuration!;
     } catch (error) {
       throw new Error(`Error getting Lambda function details: ${error}`);
@@ -49,7 +56,7 @@ export class LambdaFunctionService {
   // Crea una nueva función Lambda
   async createFunction(params: AWS.Lambda.CreateFunctionRequest): Promise<AWS.Lambda.FunctionConfiguration> {
     try {
-      const response = await this.lambda.createFunction(params).promise();
+      const response = await this.client.createFunction(params).promise();
       return response;
     } catch (error) {
       throw new Error(`Error creating Lambda function: ${error}`);
@@ -63,7 +70,7 @@ export class LambdaFunctionService {
     };
 
     try {
-      await this.lambda.deleteFunction(params).promise();
+      await this.client.deleteFunction(params).promise();
     } catch (error) {
       throw new Error(`Error deleting Lambda function: ${error}`);
     }

@@ -1,7 +1,7 @@
 import { DynamoDBService } from "./dynamodb.service.ts";
 
 export async function DynamodbSandbox() {
-  const service = new DynamoDBService("TuNombreDeTabla");
+  const service = new DynamoDBService({ tableName: "TuNombreDeTabla" });
 
   // Agregar un ítem
   service.putItem({ id: "1", name: "John Doe", age: 30 }).then();

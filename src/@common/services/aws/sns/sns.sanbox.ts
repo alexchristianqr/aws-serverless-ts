@@ -2,7 +2,7 @@ import { SNSService } from "./sns.service.ts";
 
 export async function SNSSanbox() {
   // Inicializa el servicio SNS con la región deseada
-  const snsService = new SNSService("us-west-2"); // Cambia la región si es necesario
+  const snsService = new SNSService({}); // Cambia la región si es necesario
 
   // Publicar un mensaje
   try {

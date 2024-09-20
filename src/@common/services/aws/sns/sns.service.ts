@@ -1,10 +1,17 @@
 import { SNS } from "aws-sdk";
 
-export class SNSService {
-  private sns: SNS;
+interface ConfigDefault {
+  region?: string;
+}
+const configDefault: ConfigDefault = {
+  region: "us-east-1"
+};
 
-  constructor(region: string) {
-    this.sns = new SNS({ region });
+export class SNSService {
+  private readonly client: SNS;
+
+  constructor({ region }: ConfigDefault) {
+    this.client = new SNS({ region: region ?? configDefault.region });
   }
 
   // Publicar un mensaje en un topic
@@ -16,7 +23,7 @@ export class SNSService {
     };
 
     try {
-      const result = await this.sns.publish(params).promise();
+      const result = await this.client.publish(params).promise();
       console.log(`Message sent to topic: ${topicArn}`);
       return result;
     } catch (error) {
@@ -34,7 +41,7 @@ export class SNSService {
     };
 
     try {
-      const result = await this.sns.subscribe(params).promise();
+      const result = await this.client.subscribe(params).promise();
       console.log(`Subscription created: ${result.SubscriptionArn}`);
       return result;
     } catch (error) {
@@ -50,7 +57,7 @@ export class SNSService {
     };
 
     try {
-      await this.sns.unsubscribe(params).promise();
+      await this.client.unsubscribe(params).promise();
       console.log(`Subscription deleted: ${subscriptionArn}`);
     } catch (error) {
       console.error(`Failed to delete subscription: ${error}`);
@@ -61,7 +68,7 @@ export class SNSService {
   // Listar todos los tópicos
   async listTopics(): Promise<SNS.ListTopicsResponse> {
     try {
-      const result = await this.sns.listTopics().promise();
+      const result = await this.client.listTopics().promise();
       console.log("Topics:", result.Topics);
       return result;
     } catch (error) {
@@ -73,7 +80,7 @@ export class SNSService {
   // Listar todas las suscripciones
   async listSubscriptions(): Promise<SNS.ListSubscriptionsResponse> {
     try {
-      const result = await this.sns.listSubscriptions().promise();
+      const result = await this.client.listSubscriptions().promise();
       console.log("Subscriptions:", result.Subscriptions);
       return result;
     } catch (error) {

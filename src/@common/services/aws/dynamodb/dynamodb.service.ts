@@ -1,12 +1,21 @@
 import { DynamoDB } from "aws-sdk";
 
+interface ConfigDefault {
+  region?: string;
+  tableName?: string;
+}
+const configDefault: ConfigDefault = {
+  region: "us-east-1",
+  tableName: "TuNombreDeTabla"
+};
+
 export class DynamoDBService {
-  private dynamoDb: DynamoDB.DocumentClient;
+  private readonly client: DynamoDB.DocumentClient;
   private readonly tableName: string;
 
-  constructor(tableName: string) {
-    this.dynamoDb = new DynamoDB.DocumentClient();
-    this.tableName = tableName;
+  constructor({ region, tableName }: ConfigDefault) {
+    this.client = new DynamoDB.DocumentClient({ region: region ?? configDefault.region });
+    this.tableName = tableName ?? configDefault.tableName;
   }
 
   // Insertar un nuevo item en la tabla
@@ -17,7 +26,7 @@ export class DynamoDBService {
     };
 
     try {
-      await this.dynamoDb.put(params).promise();
+      await this.client.put(params).promise();
       console.log("Item inserted successfully");
     } catch (error) {
       console.error("Error inserting item:", error);
@@ -33,7 +42,7 @@ export class DynamoDBService {
     };
 
     try {
-      const result = await this.dynamoDb.get(params).promise();
+      const result = await this.client.get(params).promise();
       return result.Item;
     } catch (error) {
       console.error("Error getting item:", error);
@@ -64,7 +73,7 @@ export class DynamoDBService {
     };
 
     try {
-      await this.dynamoDb.update(params).promise();
+      await this.client.update(params).promise();
       console.log("Item updated successfully");
     } catch (error) {
       console.error("Error updating item:", error);
@@ -80,7 +89,7 @@ export class DynamoDBService {
     };
 
     try {
-      await this.dynamoDb.delete(params).promise();
+      await this.client.delete(params).promise();
       console.log("Item deleted successfully");
     } catch (error) {
       console.error("Error deleting item:", error);
