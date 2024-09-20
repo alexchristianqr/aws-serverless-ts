@@ -1,6 +1,6 @@
 import { SNSService } from "./sns.service.ts";
 
-export async function SNSSanbox() {
+export async function SnsSandbox() {
   // Inicializa el servicio SNS con la región deseada
   const snsService = new SNSService({}); // Cambia la región si es necesario
 

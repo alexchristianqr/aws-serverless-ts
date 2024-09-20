@@ -1,8 +1,8 @@
 import { LambdaFunctionService } from "./lambda-function.service.ts";
 
-export async function LambdaFunctionSanbox() {
+export async function LambdaFunctionSandbox() {
   // Creación de instancia con la región 'us-east-1'
-  const lambdaService = new LambdaFunctionService("us-east-1");
+  const lambdaService = new LambdaFunctionService({ region: "us-east-1" });
 
   // Simulación: Invocar una función Lambda con datos simulados
   const simulatedPayload = { userId: "12345", action: "create", resource: "document" };
@@ -22,7 +22,7 @@ export async function LambdaFunctionSanbox() {
   }
 
   // Cambiar a una región diferente: 'eu-west-1'
-  const lambdaServiceEU = new LambdaFunctionService("eu-west-1");
+  const lambdaServiceEU = new LambdaFunctionService({ region: "eu-west-1" });
 
   // Simulación: Listar funciones Lambda en 'eu-west-1'
   try {

@@ -1,6 +1,6 @@
 import { S3Service } from "./s3.service.ts";
 
-export async function S3Sanbox() {
+export async function S3Sandbox() {
   const service = new S3Service({ bucketName: "mi-bucket" });
 
   // Subir un archivo

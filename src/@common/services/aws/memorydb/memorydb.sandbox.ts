@@ -1,6 +1,6 @@
 import { MemoryDBService } from "./memorydb.service.ts";
 
-export async function MemorydbSanbox() {
+export async function MemorydbSandbox() {
   const memoryDBService = new MemoryDBService({ host: "my-memorydb-cluster.xxxxxx.memorydb.us-east-1.amazonaws.com" });
 
   // Establecer un valor

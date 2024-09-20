@@ -1,6 +1,6 @@
 import { EventBridgeService } from "./event-bridge.service.ts";
 
-export async function EventBridgeSanbox() {
+export async function EventBridgeSandbox() {
   const eventBridgeService = new EventBridgeService({ eventBusName: "MyEventBus" });
 
   // Enviar un evento a EventBridge

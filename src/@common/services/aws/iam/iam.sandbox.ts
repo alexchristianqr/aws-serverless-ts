@@ -1,6 +1,6 @@
 import { IAMService } from "./iam.service.ts";
 
-export async function IamSanbox() {
+export async function IamSandbox() {
   const service = new IAMService({ region: "us-east-1" });
 
   /** Gestionar usuarios */
