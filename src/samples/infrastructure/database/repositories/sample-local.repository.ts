@@ -4,7 +4,7 @@ import dataJSON from "../../../../../data.json";
 
 interface Model extends SampleEntity {}
 
-export class SampleLocalRepository implements SampleOutputRepository<Model> {
+export class SampleLocalRepository implements SampleOutputRepository {
   private items: Array<Model> = dataJSON.data;
 
   async create(data: Model): Promise<Model> {
